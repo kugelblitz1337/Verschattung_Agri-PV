@@ -11,10 +11,11 @@ package agri.pv_shadow_sim_java;
  */
 public class AgriPVModulTyp {
     
-    private double PVPlattenLange; // In Metern
+    private double PVPlattenLange; // In Metern Entlang der Schwenkmittelachse
     private double PVPlattenBreite;
-    private double lndwrtsNchtNtzLange; // In Metern
+    private double lndwrtsNchtNtzLange; // In Metern Entlang der Schwenkmittelachse
     private double lndwrtsNchtNtzBreite;
+    private double hoheZuPlattenMitte; // In Metern, Boden zu Schwenkpunkt bzw Plattenmitte
     private int transparenz; // in %
     private int reflexion; // in %
     private double minBodenabstand; // In Metern
@@ -24,11 +25,12 @@ public class AgriPVModulTyp {
 //    private int winkelbegrenzungen;
 //    private int schwenkgeschwindigkeit;
     
-    public AgriPVModulTyp(double PVPlattenLange, double PVPlattenBreite, double lndwrtsNchtNtzLange, double lndwrtsNchtNtzBreite, int transparenz, int reflexion, double minBodenabstand, int neigung, boolean schwenkbar, String bezeichnung){
+    public AgriPVModulTyp(double PVPlattenLange, double PVPlattenBreite, double lndwrtsNchtNtzLange, double lndwrtsNchtNtzBreite, double hoheZuPlattenMitte, int transparenz, int reflexion, double minBodenabstand, int neigung, boolean schwenkbar, String bezeichnung){
         this.PVPlattenLange = PVPlattenLange;
         this.PVPlattenBreite = PVPlattenBreite;
         this.lndwrtsNchtNtzLange = lndwrtsNchtNtzLange;
         this.lndwrtsNchtNtzBreite = lndwrtsNchtNtzBreite;
+        this.hoheZuPlattenMitte = hoheZuPlattenMitte;
         this.transparenz = transparenz;
         this.reflexion = reflexion;
         this.minBodenabstand = minBodenabstand;
@@ -37,12 +39,12 @@ public class AgriPVModulTyp {
         this.bezeichnung = bezeichnung;
     }
     
-    public AgriPVModulTyp(double PVPlattenLange, double PVPlattenBreite, double lndwrtsNchtNtzLange, double lndwrtsNchtNtzBreite, double minBodenabstand, int neigung, boolean schwenkbar, String bezeichnung){
-        this(PVPlattenLange, PVPlattenBreite, lndwrtsNchtNtzLange, lndwrtsNchtNtzBreite, 0, 0, minBodenabstand, neigung, schwenkbar, bezeichnung);
+    public AgriPVModulTyp(double PVPlattenLange, double PVPlattenBreite, double lndwrtsNchtNtzLange, double lndwrtsNchtNtzBreite, double hoheZuPlattenMitte, double minBodenabstand, int neigung, boolean schwenkbar, String bezeichnung){
+        this(PVPlattenLange, PVPlattenBreite, lndwrtsNchtNtzLange, lndwrtsNchtNtzBreite, hoheZuPlattenMitte, 0, 0, minBodenabstand, neigung, schwenkbar, bezeichnung);
     }
     
-    public AgriPVModulTyp(double PVPlattenLange, double PVPlattenBreite, double lndwrtsNchtNtzLange, double lndwrtsNchtNtzBreite, int neigung, boolean schwenkbar, String bezeichnung){
-        this(PVPlattenLange, PVPlattenBreite, lndwrtsNchtNtzLange, lndwrtsNchtNtzBreite, 0, 0, 0, neigung, schwenkbar, bezeichnung);
+    public AgriPVModulTyp(double PVPlattenLange, double PVPlattenBreite, double lndwrtsNchtNtzLange, double lndwrtsNchtNtzBreite, double hoheZuPlattenMitte, int neigung, boolean schwenkbar, String bezeichnung){
+        this(PVPlattenLange, PVPlattenBreite, lndwrtsNchtNtzLange, lndwrtsNchtNtzBreite, hoheZuPlattenMitte, 0, 0, 0, neigung, schwenkbar, bezeichnung);
     }
 
     public double getPVPlattenLange() {
@@ -59,6 +61,10 @@ public class AgriPVModulTyp {
 
     public double getLndwrtsNchtNtzBreite() {
         return lndwrtsNchtNtzBreite;
+    }
+    
+    public double getHoheZuPlattenMitte() {
+        return hoheZuPlattenMitte;
     }
 
     public int getTransparenz() {
