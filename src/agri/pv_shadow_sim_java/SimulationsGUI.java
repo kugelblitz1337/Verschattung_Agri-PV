@@ -9,16 +9,23 @@ import java.awt.Color;
 import org.locationtech.jts.geom.Geometry;
 
 /**
+ * Die Klasse {@code SimulationsGUI} repräsentiert das grafische Benutzerinterface
+ * zur Anzeige der Simulationsergebnisse, insbesondere der platzierten PV-Module
+ * und der Verschattung auf dem Flurstück. Es verwendet ein {@code GeometryPanel},
+ * um die Geometrien zu zeichnen.
  *
  * @author roesc
  */
 public class SimulationsGUI extends javax.swing.JFrame {
 
+    private AgriPVData data; // Das Datenobjekt, das die Simulationsergebnisse enthält
+    
     /**
-     * Creates new form SimulationsGUI
+     * Erstellt ein neues Formular SimulationsGUI.
+     * Initialisiert die GUI-Komponenten.
      */
     public SimulationsGUI() {
-        initComponents();
+        initComponents(); // Initialisiert die Swing-Komponenten
     }
 
     /**
@@ -32,7 +39,7 @@ public class SimulationsGUI extends javax.swing.JFrame {
 
         jpnlAnzeige = new GeometryPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Simulationsergebnis");
 
         javax.swing.GroupLayout jpnlAnzeigeLayout = new javax.swing.GroupLayout(jpnlAnzeige);
         jpnlAnzeige.setLayout(jpnlAnzeigeLayout);
@@ -57,10 +64,14 @@ public class SimulationsGUI extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * @param args the command line arguments
+     * Hauptmethode zum Starten der Anwendung.
+     * Erstellt und zeigt das SimulationsGUI-Fenster an.
+     *
+     * @param args Die Kommandozeilenargumente (nicht verwendet).
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -98,15 +109,52 @@ public class SimulationsGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jpnlAnzeige;
     // End of variables declaration//GEN-END:variables
 
-    protected void setAgriPVData(AgriPVData data) {
-        ((GeometryPanel)jpnlAnzeige).setAgriPVData(data);
+    /**
+     * Setzt das {@code AgriPVData}-Objekt für diese Simulations-GUI und übergibt es
+     * an das zugrunde liegende {@code GeometryPanel}.
+     *
+     * @param data Das {@code AgriPVData}-Objekt, das die Simulationsdaten enthält.
+     */
+    public void setAgriPVData(AgriPVData data) {
+        this.data = data;
+        ((GeometryPanel)jpnlAnzeige).setAgriPVData(data); // Übergibt die Daten an das Zeichenpanel
     }
-
+    
+    /**
+     * Fügt eine Geometrie (z.B. Grundstücksumriss oder PV-Modul) zum Zeichnen hinzu.
+     * Diese Geometrien werden als Umrisse dargestellt.
+     *
+     * @param geometry Die JTS-Geometrie, die hinzugefügt werden soll.
+     * @param color Die Farbe, in der die Geometrie gezeichnet werden soll.
+     */
     protected void addGeometry(Geometry geometry, Color color) {
         ((GeometryPanel)jpnlAnzeige).addGeometry(geometry, color);
     }
     
+    /**
+     * Löscht alle derzeit auf dem Panel angezeigten Geometrien (Umrisse und gefüllte Flächen).
+     */
     protected void clearAll(){
         ((GeometryPanel)jpnlAnzeige).clearAll();
+    }
+    
+    /**
+     * Gibt das {@code GeometryPanel} dieser Simulations-GUI zurück.
+     * Dies ermöglicht externen Klassen den Zugriff auf Methoden zum Hinzufügen
+     * und Verwalten von Geometrien zur Visualisierung.
+     *
+     * @return Das {@code GeometryPanel}-Objekt, das die Geometrien zeichnet.
+     */
+    public GeometryPanel getGeometryPanel() {
+        return (GeometryPanel) jpnlAnzeige;
+    }
+    
+    /**
+     * Löscht nur die Geometrien, die für die Verschattungsanzeige (gefüllte Polygone)
+     * verwendet werden. Andere Geometrien (wie Grundstücksumrisse und PV-Modul-Umrisse)
+     * bleiben erhalten, um die Basiskarte nicht neu aufbauen zu müssen.
+     */
+    public void clearShadingGeometries() {
+        ((GeometryPanel)jpnlAnzeige).clearShadingGeometries();
     }
 }
