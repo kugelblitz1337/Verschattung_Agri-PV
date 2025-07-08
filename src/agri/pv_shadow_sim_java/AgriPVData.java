@@ -35,9 +35,7 @@ public class AgriPVData implements Serializable{
     protected ArrayList<Coordinate> mitlpuktPV; // Liste der Mittelpunkte der platzierten PV-Module
     protected Polygon plotPolygon; // JTS-Polygon, das die Grundstücksgrenze repräsentiert
     
-    protected double[][] shadingValuess; // Speichert die kumulierten Verschattungswerte (z.B. Schattenminuten) für jedes Gitternetzfeld
-    protected Polygon[][] gridPolygonss; // Speichert die JTS-Polygone, die jedes Gitternetzfeld auf dem Grundstück repräsentieren
-    protected AgriPVGridField[][] gridFields; // Speichert die AgriPVGridField-Objekte, die jedes Gitternetzfeld auf dem Grundstück repräsentieren
+    protected AgriPVGridField[][] gridFields; // Speichert die AgriPVGridField-Objekte, die jedes Gitternetzfeld auf dem Grundstück und dessen Verschattungswert repräsentieren
     protected GeometryFactory gf = new GeometryFactory(); // JTS GeometryFactory zur Erstellung von Geometrien
     
     protected KonfigurationGUI kGUI;

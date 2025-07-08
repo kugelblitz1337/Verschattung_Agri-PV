@@ -194,6 +194,7 @@ public class AgriPVSimulationCalc {
 
             // Fügt den projizierten 2D-Punkt zur Liste hinzu.
             // Die Konvexität der Schattenfläche wird aus den projizierten Eckpunkten gebildet.
+            // Reflextion bei (new Coordinate(p3d.x + shadowXOffset, p3d.y + shadowYOffset));
             projectedCoords.add(new Coordinate(p3d.x - shadowXOffset, p3d.y - shadowYOffset));
         }
 
@@ -247,6 +248,8 @@ public class AgriPVSimulationCalc {
             System.out.println("TODO: Die Verschattungsberechnung für schwenkbare PV-Module ist noch nicht implementiert.");
             return;
         }
+        
+        System.out.println(System.nanoTime() + " calculateAllShading gestartet");
 
         // Standortparameter. Diese könnten später dynamisch aus Daten oder der Konfiguration stammen.
         ZoneId zoneId = ZoneId.of("Europe/Berlin"); // Zeitzone für die Sonnenpositionsberechnung
@@ -278,10 +281,9 @@ public class AgriPVSimulationCalc {
                 
                 if(executor.isShutdown())break;
                 
-                int completedTimeSteps = 0;
-                int progress =(int) (currentModuleCount * 100.0 / totalModules);
-                data.kGUI.setJprgrsbrRunning(progress); // Aktualisiert die Fortschrittsanzeige in der GUI
                 currentModuleCount++;
+                int progress =(int) (currentModuleCount * 9900.0 / totalModules);
+                data.kGUI.setJprgrsbrRunning(progress); // Aktualisiert die Fortschrittsanzeige in der GUI
 
                 // Setzen des Startzeitpunkts für die Simulation für das aktuelle Modul.
                 // ZonedDateTime handhabt den Jahreswechsel und die Monatslängen automatisch.
@@ -353,11 +355,6 @@ public class AgriPVSimulationCalc {
                             return calculateShadowPolygon(fixedModule3DCorners, solarAzimuth, solarZenith);
                         });
                     }
-                    
-                    completedTimeSteps++; // Erhöht den Zähler der abgeschlossenen Zeitschritte
-                    // Berechnet den Fortschritt in Prozent.
-                    progress = (int) (completedTimeSteps * (currentModuleCount * 100.0 / totalModules) / totalTimeSteps);
-                    data.kGUI.setJprgrsbrRunning(progress); // Aktualisiert die Fortschrittsanzeige in der GUI
 
                     // Geht zum nächsten Zeitintervall über.
                     currentDateTime = currentDateTime.plusMinutes(intrvMin);
@@ -381,7 +378,6 @@ public class AgriPVSimulationCalc {
                     worker.cancel(true);
                     return;
                 }
-                
                 
                 // Führt alle Modul-Schattenberechnungsaufgaben parallel aus und wartet auf deren Abschluss.
                 List<Future<Polygon>> futures = null;
@@ -408,8 +404,7 @@ public class AgriPVSimulationCalc {
                 }
                 
                 // Erstellt eine Callable-Aufgabe für die Schattenvisualisierung eines einzelnen Moduls.
-                // Jede Callable-Aufgabe wird in einem separaten Thread im Executor-Service ausgeführt.|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-                // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+                // Jede Callable-Aufgabe wird in einem separaten Thread im Executor-Service ausgeführt.
                 if (!shadowsForCurrentModulPos.isEmpty()) {
                     moduleShadowVisualizationTasks.add(() -> {
                         // Übergabe aller Schattenpolygone für das aktuelle Modul an die Visualisierungsmethode.
@@ -441,6 +436,12 @@ public class AgriPVSimulationCalc {
                 }
             }
             
+            
+            // Gesamtanzahl der Module und Initialisierung des Fortschrittszählers
+            data.kGUI.setJprgrsbrRunning(300,"Simulation läuft: 3%"); // Aktualisiert die Fortschrittsanzeige in der GUI
+            
+            System.out.println(System.nanoTime() + " Schattenvisualizierungsaufgaben gestartet");
+            
             // Führt alle Modul-Schattenvisualizierungsaufgaben parallel aus und wartet auf deren Abschluss.
             List<Future<Boolean>> futures = null;
             try {
@@ -463,18 +464,6 @@ public class AgriPVSimulationCalc {
                     }
                 }
             }
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         }
         
         //Prüft ob der ExecutorService noch nicht beendet wurde
@@ -493,7 +482,7 @@ public class AgriPVSimulationCalc {
             }
         }
         
-        System.out.println("Schattenberechnung für alle Module abgeschlossen.");
+        System.out.println(System.nanoTime() + " Schattenberechnung für alle Module abgeschlossen.");
     }
 
     
@@ -550,7 +539,7 @@ public class AgriPVSimulationCalc {
                     data.gridFields[row][col] = new AgriPVGridField(0.0, gridPolygon, inPlot);
                 }
             }
-            System.out.println("Gitternetz und Verschattungswerte initialisiert. Größe: " + numCellsE + "x" + numCellsN);
+            System.out.println(System.nanoTime() + " Gitternetz und Verschattungswerte initialisiert. Größe: " + numCellsE + "x" + numCellsN);
         } else {
             // Wenn das Gitternetz bereits initialisiert ist und die Größe passt,
             // werden nur die `shadingValue` auf 0 zurückgesetzt, um eine neue Berechnung zu starten,
@@ -650,108 +639,19 @@ public class AgriPVSimulationCalc {
                             }
                         }
                     }
+                if(data.isInterupted)return null;
                 }
             } else {
                 System.out.println("Schattenverlaufsfläche konnte nicht als Polygon gebildet werden oder ist null.");
             }
         }
-        System.out.println("Verschattung für aktuelles Zeitintervall in Gitternetz eingetragen.");
+        int prog =(int) (data.kGUI.getJprgrsbrRunning() + (9700.0 / data.mitlpuktPV.size()));
+        data.kGUI.setJprgrsbrRunning(prog,"Simulation läuft: "+ (int)(prog/100) +"%");
         // Debugging-Ausgabe (auskommentiert): Kann verwendet werden, um die berechneten shadingValues zu überprüfen.
         // for (int row = 0; row < data.shadingValues.length; row++) {
         //     System.out.println(Arrays.toString(data.shadingValues[row]));
         // }
         return ret;
-    }
-        
-
-    /**
-     * Akkumuliert die Schattenminuten für eine gegebene Liste von Schattenpolygonen
-     * auf dem Gitternetz. Diese Methode wird für jeden Zeitschritt aufgerufen,
-     * um die Schattenbeiträge der Module zu den jeweiligen Gitternetzfeldern hinzuzufügen.
-     * <p>
-     * Der Zugriff auf das {@code data.shadingValues}-Array wird synchronisiert,
-     * um Threadsicherheit zu gewährleisten, falls diese Methode parallel aufgerufen würde.
-     * (In der aktuellen Implementierung wird sie sequenziell pro Zeitschritt aufgerufen,
-     * aber die internen Schleifen könnten von mehreren Modulen gleichzeitig auf `shadingValues` zugreifen,
-     * wenn die Modulschattenberechnung parallelisiert ist und diese Methode pro Modul aufgerufen wird.
-     * Hier wird sie pro Zeitschritt mit *allen* Modulschatten dieses Zeitschritts aufgerufen,
-     * daher ist die Synchronisierung auf `data.shadingValues` für die Akkumulation wichtig.)
-     *
-     * @param data Das {@code AgriPVData}-Objekt, das die Verschattungswerte und Gitternetzpolygone enthält.
-     * @param gttrNtzMeter Die Gitternetzauflösung in Metern.
-     * @param shadowPolygons Eine Liste von Schattenpolygonen, die für den aktuellen Zeitschritt von allen Modulen berechnet wurden.
-     * @param intrvMin Das Zeitintervall in Minuten, für das diese Schattenpolygone gelten (wird zur Gewichtung der Verschattung verwendet).
-     */
-    private static void accumulateShadingOnGrid(AgriPVData data, double gttrNtzMeter, ArrayList<Polygon> shadowPolygons, int intrvMin) {
-        GeometryFactory gf = new GeometryFactory(); // JTS GeometryFactory zur Erstellung von Geometrien
-
-        // Iteriert über Paare von benachbarten Schattenpolygonen, um den Schattenverlauf
-        // über ein Zeitintervall (zwischen zwei aufeinanderfolgenden Sonnenstandsberechnungen) zu berücksichtigen.
-        // Dies bildet eine "Schattenverlaufsfläche".
-        for (int i = 0; i < shadowPolygons.size(); i++) { // Iteriert über jedes einzelne Schattenpolygon
-            Polygon currentShadow = shadowPolygons.get(i);
-
-            if (currentShadow == null) {
-                continue; // Überspringt die Berechnung, wenn das Schattenpolygon null ist.
-            }
-
-            // Die "Schattenverlaufsfläche" ist hier das einzelne Schattenpolygon, da wir pro Modul und Zeitschritt akkumulieren.
-            // Wenn man den Verlauf zwischen zwei Zeitpunkten eines *einzelnen* Moduls akkumulieren wollte,
-            // wäre der ConvexHull-Ansatz zwischen shadow_t und shadow_t+1 korrekt.
-            // Da calculateAllShading jetzt pro Zeitschritt *alle* Modulschatten sammelt und diese Methode aufruft,
-            // ist jeder Eintrag in `shadowPolygons` ein Schatten zu einem bestimmten Zeitpunkt von einem bestimmten Modul.
-            // Der Beitrag dieses Schattens zum Gitternetz wird direkt akkumuliert.
-            Geometry schattenFlaeche = currentShadow; // Das aktuelle Schattenpolygon ist die zu prüfende Fläche.
-
-            if (schattenFlaeche instanceof Polygon) {
-                // Iteriert über jedes Feld im Gitternetz.
-                for (int row = 0; row < data.gridFields.length; row++) {
-                    for (int col = 0; col < data.gridFields[0].length; col++) {
-                        if(data.gridFields[row][col].inPlot == false) continue; // Überspringt Polygone die auserhalb der Grundstücksgrenzenliegen
-                        
-                        Polygon gridCell = data.gridFields[row][col].gridPolygon; // Das aktuelle Gitternetzfeld
-
-                        // Prüft, ob die Gitternetz-Zelle die Schattenfläche schneidet.
-                        if (gridCell.intersects(schattenFlaeche)) {
-                            // Berechnet den geometrischen Schnittbereich zwischen der Gitternetz-Zelle
-                            // und der Schattenfläche.
-                            Geometry intersection = gridCell.intersection(schattenFlaeche);
-
-                            // Wenn der Schnittbereich ein Polygon oder MultiPolygon ist (d.h. eine Fläche),
-                            // wird der flächenmäßige Anteil der Verschattung berechnet.
-                            if (intersection instanceof Polygon || intersection instanceof MultiPolygon) {
-                                double intersectedArea = intersection.getArea(); // Fläche des Schnittbereichs
-                                double gridCellArea = gridCell.getArea(); // Fläche der Gitternetz-Zelle
-
-                                if (gridCellArea > 0) { // Vermeidet Division durch Null
-                                    // Berechnet den prozentualen Anteil der überdeckten Fläche der Gitternetz-Zelle.
-                                    double percentageCovered = intersectedArea / gridCellArea;
-                                    
-                                    // Synchronisiert den Zugriff auf das gemeinsam genutzte `gridFields`-Array.
-                                    // Dies ist entscheidend, da mehrere Threads gleichzeitig versuchen könnten,
-                                    // Werte zu derselben Zelle hinzuzufügen.
-                                    synchronized (data.gridFields) {
-                                        // Addiert den proportionalen Wert zur Verschattung des Feldes.
-                                        // Der Wert repräsentiert hier "Schattenminuten" pro Quadratmeter im Feld.
-                                        // `percentageCovered` gibt an, welcher Anteil der Gitternetz-Zelle
-                                        // vom Schatten überdeckt ist. Multiplikation mit `intrvMin` gewichtet
-                                        // dies mit der Dauer des Zeitintervalls.
-                                        data.gridFields[row][col].shadingValue += percentageCovered * intrvMin;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                System.out.println("Schattenfläche konnte nicht als Polygon gebildet werden oder ist null.");
-            }
-        }
-        // System.out.println("Verschattung für aktuelles Zeitintervall in Gitternetz eingetragen.");
-        // Debugging-Ausgabe (auskommentiert): Kann verwendet werden, um die berechneten shadingValues zu überprüfen.
-        // for (int row = 0; row < data.shadingValues.length; row++) {
-        //     System.out.println(Arrays.toString(data.shadingValues[row]));
-        // }
     }
 
     /**

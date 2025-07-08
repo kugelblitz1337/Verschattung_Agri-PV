@@ -207,7 +207,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jlblPVKReihenabs" max="32767" attributes="0"/>
-                              <Component id="jlblPVKRand" pref="176" max="32767" attributes="0"/>
+                              <Component id="jlblPVKRand" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -239,9 +239,9 @@
                       <Component id="jtxtfldPVKReihenabstand" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jtxtfldPVKRand" min="-2" max="-2" attributes="0"/>
-                      <Component id="jlblPVKRand" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jtxtfldPVKRand" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jlblPVKRand" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -323,14 +323,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jlblUGKT" max="32767" attributes="0"/>
                       <Component id="jlblUGKEigenschaften" alignment="0" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jchckbxDiffusion" min="-2" pref="162" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jtxtfldDiffusion" pref="87" max="32767" attributes="0"/>
-                      </Group>
                       <Component id="jlblUGKVisualisierung" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jchckbxOnlyPVPlacement" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jchckbxSSM" alignment="0" min="-2" pref="162" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="jlblUGKIntervall" min="-2" pref="137" max="-2" attributes="0"/>
@@ -356,7 +353,6 @@
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jchckbxOnlyPVPlacement" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -394,10 +390,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jlblUGKEigenschaften" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jchckbxDiffusion" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jtxtfldDiffusion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jchckbxSSM" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jchckbxOnlyPVPlacement" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
@@ -419,19 +412,14 @@
             <Property name="text" type="java.lang.String" value="Zus&#xe4;tzliche Eigenschaften:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jchckbxDiffusion">
+        <Component class="javax.swing.JCheckBox" name="jchckbxSSM">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Diffuse Komponente"/>
+            <Property name="text" type="java.lang.String" value="Super-Speed Modus"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jchckbxOnlyPVPlacement">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nur PV-Module plazieren"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="jtxtfldDiffusion">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="60%"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblUGKGitternetz">
@@ -520,12 +508,11 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jlblKonfigurationsdatei" max="32767" attributes="0"/>
-              <Group type="102" attributes="0">
-                  <Component id="jbtnKDImport" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jbtnKDExport" min="-2" max="-2" attributes="0"/>
+              <Component id="jlblExportdatei" pref="270" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jbtnSimulationSpeichern" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -533,32 +520,27 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="17" max="32767" attributes="0"/>
-                  <Component id="jlblKonfigurationsdatei" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlblExportdatei" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jbtnKDImport" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jbtnKDExport" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jbtnSimulationSpeichern" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jbtnKDImport">
+        <Component class="javax.swing.JLabel" name="jlblExportdatei">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Importieren"/>
+            <Property name="text" type="java.lang.String" value="Simulation exportieren:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jlblKonfigurationsdatei">
+        <Component class="javax.swing.JButton" name="jbtnSimulationSpeichern">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Konfigurationsdatei:"/>
+            <Property name="text" type="java.lang.String" value="Simulationergebnis speichern"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="jbtnKDExport">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Exportieren"/>
-          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnSimulationSpeichernActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -598,6 +580,7 @@
       <SubComponents>
         <Component class="javax.swing.JProgressBar" name="jprgrsbrRunning">
           <Properties>
+            <Property name="maximum" type="int" value="10000"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Standardcursor"/>

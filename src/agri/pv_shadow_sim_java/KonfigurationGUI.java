@@ -6,8 +6,13 @@
 package agri.pv_shadow_sim_java;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker; 
 import org.locationtech.jts.geom.*;
 
@@ -71,9 +76,8 @@ public class KonfigurationGUI extends javax.swing.JFrame {
         jpnlUGK = new javax.swing.JPanel();
         jlblUGKT = new javax.swing.JLabel();
         jlblUGKEigenschaften = new javax.swing.JLabel();
-        jchckbxDiffusion = new javax.swing.JCheckBox();
+        jchckbxSSM = new javax.swing.JCheckBox();
         jchckbxOnlyPVPlacement = new javax.swing.JCheckBox();
-        jtxtfldDiffusion = new javax.swing.JTextField();
         jlblUGKGitternetz = new javax.swing.JLabel();
         jtxtfldGitternetz = new javax.swing.JTextField();
         jlblUGKZeitspanne = new javax.swing.JLabel();
@@ -85,9 +89,8 @@ public class KonfigurationGUI extends javax.swing.JFrame {
         jcmbbxUGKStartmonat = new javax.swing.JComboBox<>();
         jlblUGKStartmonat = new javax.swing.JLabel();
         jpnlKGD = new javax.swing.JPanel();
-        jbtnKDImport = new javax.swing.JButton();
-        jlblKonfigurationsdatei = new javax.swing.JLabel();
-        jbtnKDExport = new javax.swing.JButton();
+        jlblExportdatei = new javax.swing.JLabel();
+        jbtnSimulationSpeichern = new javax.swing.JButton();
         jpnlSteuerung = new javax.swing.JPanel();
         jprgrsbrRunning = new javax.swing.JProgressBar();
         jbtnAbbrechen = new javax.swing.JButton();
@@ -214,7 +217,7 @@ public class KonfigurationGUI extends javax.swing.JFrame {
                     .addGroup(jpnlPVKLayout.createSequentialGroup()
                         .addGroup(jpnlPVKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jlblPVKReihenabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jlblPVKRand, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                            .addComponent(jlblPVKRand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpnlPVKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jtxtfldPVKRand, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
@@ -239,7 +242,7 @@ public class KonfigurationGUI extends javax.swing.JFrame {
                     .addComponent(jlblPVKReihenabs)
                     .addComponent(jtxtfldPVKReihenabstand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlPVKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpnlPVKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtxtfldPVKRand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlblPVKRand))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -250,11 +253,9 @@ public class KonfigurationGUI extends javax.swing.JFrame {
 
         jlblUGKEigenschaften.setText("Zusätzliche Eigenschaften:");
 
-        jchckbxDiffusion.setText("Diffuse Komponente");
+        jchckbxSSM.setText("Super-Speed Modus");
 
         jchckbxOnlyPVPlacement.setText("Nur PV-Module plazieren");
-
-        jtxtfldDiffusion.setText("60%");
 
         jlblUGKGitternetz.setText("Gitternetzauflösung (m)");
 
@@ -285,13 +286,11 @@ public class KonfigurationGUI extends javax.swing.JFrame {
                 .addGroup(jpnlUGKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlblUGKT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jlblUGKEigenschaften, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jpnlUGKLayout.createSequentialGroup()
-                        .addComponent(jchckbxDiffusion, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtfldDiffusion, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
                     .addComponent(jlblUGKVisualisierung, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jchckbxOnlyPVPlacement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jpnlUGKLayout.createSequentialGroup()
                         .addGroup(jpnlUGKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jchckbxSSM, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jpnlUGKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(jpnlUGKLayout.createSequentialGroup()
                                     .addComponent(jlblUGKIntervall, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -309,8 +308,7 @@ public class KonfigurationGUI extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jtxtfldGitternetz, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jlblUGKZeitspanne, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jchckbxOnlyPVPlacement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpnlUGKLayout.setVerticalGroup(
@@ -341,43 +339,42 @@ public class KonfigurationGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jlblUGKEigenschaften)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlUGKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jchckbxDiffusion)
-                    .addComponent(jtxtfldDiffusion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jchckbxSSM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jchckbxOnlyPVPlacement)
                 .addGap(8, 8, 8))
         );
 
-        jbtnKDImport.setText("Importieren");
+        jlblExportdatei.setText("Simulation exportieren:");
 
-        jlblKonfigurationsdatei.setText("Konfigurationsdatei:");
-
-        jbtnKDExport.setText("Exportieren");
+        jbtnSimulationSpeichern.setText("Simulationergebnis speichern");
+        jbtnSimulationSpeichern.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSimulationSpeichernActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpnlKGDLayout = new javax.swing.GroupLayout(jpnlKGD);
         jpnlKGD.setLayout(jpnlKGDLayout);
         jpnlKGDLayout.setHorizontalGroup(
             jpnlKGDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jlblKonfigurationsdatei, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jlblExportdatei, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
             .addGroup(jpnlKGDLayout.createSequentialGroup()
-                .addComponent(jbtnKDImport)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbtnKDExport)
-                .addContainerGap())
+                .addContainerGap()
+                .addComponent(jbtnSimulationSpeichern)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpnlKGDLayout.setVerticalGroup(
             jpnlKGDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlKGDLayout.createSequentialGroup()
                 .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(jlblKonfigurationsdatei)
+                .addComponent(jlblExportdatei)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlKGDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnKDImport)
-                    .addComponent(jbtnKDExport))
+                .addComponent(jbtnSimulationSpeichern)
                 .addContainerGap())
         );
 
+        jprgrsbrRunning.setMaximum(10000);
         jprgrsbrRunning.setToolTipText("");
         jprgrsbrRunning.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -504,9 +501,9 @@ public class KonfigurationGUI extends javax.swing.JFrame {
     private void jbtnAbbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAbbrechenActionPerformed
         data.isInterupted = true;
         
-        worker.cancel(true);
-        this.dispose(); // Schließt das Konfigurationsfenster
+        if(worker != null)worker.cancel(true);
         
+        this.dispose(); // Schließt das Konfigurationsfenster
         sGUI.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         sGUI.dispose(); // Schließt das Simulationsfenster
     }//GEN-LAST:event_jbtnAbbrechenActionPerformed
@@ -525,6 +522,8 @@ public class KonfigurationGUI extends javax.swing.JFrame {
             jlblProgressText.setText("Bitte wählen Sie zuerst ein Flurstück aus.");
             return; // Beendet die Methode, wenn kein Flurstück ausgewählt ist.
         }        
+        
+        simStart();
 
         jprgrsbrRunning.setIndeterminate(true); // Startet die Fortschrittsanzeige im unbestimmten Modus
         jlblProgressText.setText("Simulation wird vorbereitet..."); // Aktualisiert den Status Text
@@ -539,9 +538,12 @@ public class KonfigurationGUI extends javax.swing.JFrame {
         // Fügt den Grundstücksumriss zur Simulations-GUI hinzu (schwarz gezeichnet)
         sGUI.addGeometry(data.plotPolygon, Color.BLACK);  
         
+        jlblProgressText.setText(data.mitlpuktPV.size() + " PV-Module plaziert..."); // Aktualisiert den Status Text
+        
         if(jchckbxOnlyPVPlacement.isSelected()){
             sGUI.repaint(); // Aktualisiert das Simulations-GUI
             sGUI.setVisible(true); // Macht die Simulations-GUI sichtbar
+            simEnde();
             return;
         }
         
@@ -591,8 +593,9 @@ public class KonfigurationGUI extends javax.swing.JFrame {
                     e.printStackTrace();
                     jlblProgressText.setText("Simulation fehlgeschlagen: " + e.getMessage());
                 } finally {
-                    jprgrsbrRunning.setValue(100); // Setzt den Fortschritt auf 100%
+                    jprgrsbrRunning.setValue(10000); // Setzt den Fortschritt auf 100%
                     jlblProgressText.setText("Simulation abgeschlossen."); // Finaler Status Text
+                    simEnde();
                     if(data.isInterupted == false){
                         updateShadingDisplay(); // Ruft die Methode zum Zeichnen der Heatmap auf (im EDT)
                         sGUI.setVisible(true); // Macht die Simulations-GUI sichtbar (im EDT)
@@ -602,6 +605,14 @@ public class KonfigurationGUI extends javax.swing.JFrame {
         };
         worker.execute(); // Startet den SwingWorker im Hintergrund
     }//GEN-LAST:event_jbtnSimulationStartenActionPerformed
+
+    private void jbtnSimulationSpeichernActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSimulationSpeichernActionPerformed
+        if(data.gridFields == null || data.gridFields.length == 0){
+            jlblProgressText.setText("Bitte erst die Simulation starten!");
+            return;
+        }
+        exportAsCSV(data.gridFields);
+    }//GEN-LAST:event_jbtnSimulationSpeichernActionPerformed
 
 
     /**
@@ -646,16 +657,16 @@ public class KonfigurationGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbtnAbbrechen;
     private javax.swing.JButton jbtnFlurstueckAuswahl;
-    private javax.swing.JButton jbtnKDExport;
-    private javax.swing.JButton jbtnKDImport;
+    private javax.swing.JButton jbtnSimulationSpeichern;
     private javax.swing.JButton jbtnSimulationStarten;
-    private javax.swing.JCheckBox jchckbxDiffusion;
     private javax.swing.JCheckBox jchckbxOnlyPVPlacement;
+    private javax.swing.JCheckBox jchckbxSSM;
     private javax.swing.JCheckBox jchckbxUGKLog;
     private javax.swing.JComboBox<String> jcmbbxPVKAusrichtung;
     private javax.swing.JComboBox<AgriPVModulTyp> jcmbbxPVKTypen;
     private javax.swing.JComboBox<String> jcmbbxUGKStartmonat;
     private javax.swing.JComboBox<String> jcmbbxUGKZeitspanne;
+    private javax.swing.JLabel jlblExportdatei;
     private javax.swing.JLabel jlblFlaeche;
     private javax.swing.JLabel jlblFlaecheText;
     private javax.swing.JLabel jlblFlurstuecknenner;
@@ -664,7 +675,6 @@ public class KonfigurationGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jlblFlurstueckzahlerText;
     private javax.swing.JLabel jlblGemeinde;
     private javax.swing.JLabel jlblGemeindeText;
-    private javax.swing.JLabel jlblKonfigurationsdatei;
     private javax.swing.JLabel jlblPVKAusrichtung;
     private javax.swing.JLabel jlblPVKRand;
     private javax.swing.JLabel jlblPVKReihenabs;
@@ -685,7 +695,6 @@ public class KonfigurationGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jpnlSteuerung;
     private javax.swing.JPanel jpnlUGK;
     private javax.swing.JProgressBar jprgrsbrRunning;
-    private javax.swing.JTextField jtxtfldDiffusion;
     private javax.swing.JTextField jtxtfldGitternetz;
     private javax.swing.JTextField jtxtfldPVKRand;
     private javax.swing.JTextField jtxtfldPVKReihenabstand;
@@ -897,6 +906,103 @@ public class KonfigurationGUI extends javax.swing.JFrame {
         jprgrsbrRunning.setIndeterminate(false);
         jprgrsbrRunning.setValue(i);
     }
+    
+    /**
+     * Setzt den Wert der Fortschrittsanzeige.
+     *
+     * @param i Der Wert, auf den die Fortschrittsanzeige gesetzt werden soll.
+     * @param text Der Text, der gesetzt werden soll.
+     */
+    protected void setJprgrsbrRunning(int i, String text){
+        jlblProgressText.setText(text);
+        jprgrsbrRunning.setValue(i);
+    }
+    
+    protected int getJprgrsbrRunning(){
+        return jprgrsbrRunning.getValue();
+    }
+    
+    private void simStart(){
+        jbtnSimulationStarten.setEnabled(false);
+        jbtnFlurstueckAuswahl.setEnabled(false);
+        jcmbbxPVKTypen.setEnabled(false);
+        jcmbbxPVKAusrichtung.setEnabled(false);
+        jtxtfldPVKReihenabstand.setEnabled(false);
+        jtxtfldPVKRand.setEnabled(false);
+        jtxtfldGitternetz.setEnabled(false);
+        jcmbbxUGKZeitspanne.setEnabled(false);
+        jcmbbxUGKStartmonat.setEnabled(false);
+        jtxtfldUGKIntervallgenuigkeit.setEnabled(false);
+        jchckbxUGKLog.setEnabled(false);
+        jchckbxOnlyPVPlacement.setEnabled(false);
+        jchckbxSSM.setEnabled(false);
+        jbtnSimulationSpeichern.setEnabled(false);
+    }
+    
+    private void simEnde(){
+        jbtnSimulationStarten.setEnabled(true);
+        jbtnFlurstueckAuswahl.setEnabled(true);
+        jcmbbxPVKTypen.setEnabled(true);
+        jcmbbxPVKAusrichtung.setEnabled(true);
+        jtxtfldPVKReihenabstand.setEnabled(true);
+        jtxtfldPVKRand.setEnabled(true);
+        jtxtfldGitternetz.setEnabled(true);
+        jcmbbxUGKZeitspanne.setEnabled(true);
+        jcmbbxUGKStartmonat.setEnabled(true);
+        jtxtfldUGKIntervallgenuigkeit.setEnabled(true);
+        jchckbxUGKLog.setEnabled(true);
+        jchckbxOnlyPVPlacement.setEnabled(true);
+        jchckbxSSM.setEnabled(true);
+        jbtnSimulationSpeichern.setEnabled(true);
+        
+    }
+    
+    /**
+    * Öffnet einen Datei-Speicher-Dialog und speichert ein übergebenes 2D-Array von Strings als CSV-Datei.
+    * <p>
+    * Jede Zeile des Arrays wird als neue Zeile in der CSV-Datei geschrieben, wobei die Spalten durch ein Semikolon getrennt werden.
+    * Falls der Benutzer keine Dateiendung angibt, wird automatisch ".csv" angehängt.
+    * </p>
+    *
+    * @param daten Ein zweidimensionales Array mit den Daten, die in die CSV-Datei geschrieben werden sollen.
+    *              Die erste Dimension entspricht den Zeilen, die zweite den Spalten.
+    *
+    * @throws NullPointerException falls das übergebene Array {@code null} ist.
+    */
+   public static void exportAsCSV(AgriPVGridField[][] daten) {
+       if (daten == null) {
+           throw new NullPointerException("Das Datenarray darf nicht null sein.");
+       }
+
+       JFileChooser dateiDialog = new JFileChooser();
+       dateiDialog.setDialogTitle("CSV-Datei speichern");
+       dateiDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+       int auswahl = dateiDialog.showSaveDialog(null);
+       if (auswahl == JFileChooser.APPROVE_OPTION) {
+           File datei = dateiDialog.getSelectedFile();
+
+           // Dateiendung hinzufügen, wenn nötig
+           if (!datei.getName().toLowerCase().endsWith(".csv")) {
+               datei = new File(datei.getAbsolutePath() + ".csv");
+           }
+
+           try (PrintWriter writer = new PrintWriter(new FileWriter(datei))) {
+               for (AgriPVGridField[] zeile : daten) {
+                   String csvZeile = "";
+                   for(AgriPVGridField feld :zeile){
+                    csvZeile +=  feld.shadingValue + ";";  // Trennzeichen: Semikolon
+                   }
+                   writer.println(csvZeile);
+               }
+               JOptionPane.showMessageDialog(null, "Datei erfolgreich gespeichert:\n" + datei.getAbsolutePath());
+           } catch (java.io.IOException e) {
+               JOptionPane.showMessageDialog(null, "Fehler beim Speichern:\n" + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+               e.printStackTrace();
+           }
+       }
+   }
+
     
     /**
      * Wandelt den ausgewählten Index der Zeitspanne-ComboBox in die entsprechende Anzahl von Monaten um.
