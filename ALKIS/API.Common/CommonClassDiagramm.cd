@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="API.Common.Database.DbContext">
+    <Position X="4" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQQAAAAAAAAAAAAgAEAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Database\DbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.Database.EFConnector" BaseTypeListCollapsed="true">
+    <Position X="20.25" Y="8.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>gAACAAAAACAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Database\EFConnector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Database.Repository&lt;TEntity&gt;" BaseTypeListCollapsed="true">
+    <Position X="12" Y="12.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAAAAABABAAAAAAAAAAAEAAAAAAgAAAAEAAAI=</HashCode>
+      <FileName>Database\RepositoryGeneric.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.LocationSearch.Location">
+    <Position X="2.5" Y="9.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAIAAAEAAAAICQAAAGAFCAAgAAAIAAAAAQA=</HashCode>
+      <FileName>LocationSearch\Location.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.LocationSearch.Rootobject">
+    <Position X="0.5" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LocationSearch\Location.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.LocationSearch.Supermarket">
+    <Position X="0.5" Y="9.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAEAIAAAACAAAAEIAAABAAAIAgAAAAAA=</HashCode>
+      <FileName>LocationSearch\Supermarket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.SupermarketSearch" BaseTypeListCollapsed="true">
+    <Position X="19.5" Y="2" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>CgAAAAAAAIgAAAYAAAgCAABCIAAAAAAgAAAAAAAAAAg=</HashCode>
+      <FileName>LocationSearch\SupermarketSearch.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.CommonWebClient">
+    <Position X="0.5" Y="3.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEA=</HashCode>
+      <FileName>CommonWebClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.ModuleRegister">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModuleRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.UtilitiesContext">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>UtilitiesContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.DTO.PriceAlert">
+    <Position X="7.75" Y="9.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAKAAAAAQAAAAAAAAEAAAAAACAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>DTO\PriceAlert.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.DTO.Product">
+    <Position X="0.5" Y="13.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AACgAAAAAQAggAAEEAAQACQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.DTO.SupermarketProducts">
+    <Position X="5" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>DTO\SupermarketProducts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Common.Entities.Location" BaseTypeListCollapsed="true">
+    <Position X="17" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIgAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Location.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.536" />
+  </Class>
+  <Class Name="API.Common.Entities.PriceAlert" BaseTypeListCollapsed="true">
+    <Position X="17" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAKAAAAAQAAAAAAAAEAAAAAACAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Entities\PriceAlert.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Entities.Product" BaseTypeListCollapsed="true">
+    <Position X="17" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgCCKAAAAQAggAAEEAAAACQAAAAQAAAAAAAAABIAAAA=</HashCode>
+      <FileName>Entities\Product.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Repository.PriceAlertRepository" BaseTypeListCollapsed="true">
+    <Position X="11.25" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAADAAAAIAAAAAwAAAAAAgAAAAA=</HashCode>
+      <FileName>Repository\PriceAlertRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Repository.ProductRepository" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAADAAAAIAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Repository\ProductRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Logger.ConsoleLogger" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logger\ConsoleLogger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Logger.FileLogger" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAIBAAAAAAAAAAAAAAAAACAEAAAAAAAIAAAAA=</HashCode>
+      <FileName>Logger\FileLogger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Logger.MailLogger" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAIBAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logger\MailLogger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="API.Common.Email.EMailService" BaseTypeListCollapsed="true">
+    <Position X="27" Y="2" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAgAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Email\EMailService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="API.Common.Interfaces.IAPIHandler">
+    <Position X="8.75" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAQAAAAAgAAAA=</HashCode>
+      <FileName>Interfaces\IAPIHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.IEFConnector">
+    <Position X="20.25" Y="6.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>gAACAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IEFConnector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.IEMailService">
+    <Position X="27" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IEMailService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.IEntity">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.ILogger">
+    <Position X="14.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ILogger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.IPlattformScraper">
+    <Position X="8.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPlattformScraper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.IPriceAlertRepository">
+    <Position X="11.25" Y="0.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAwAAAAAAgAAAAA=</HashCode>
+      <FileName>Interfaces\IPriceAlertRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.IProductRepository">
+    <Position X="24.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Interfaces\IProductRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.IRepository&lt;TEntity&gt;">
+    <Position X="12" Y="10" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAAAAAAABAAAAAAAAAAAEAAAAAAgAAAAEAAAI=</HashCode>
+      <FileName>Interfaces\IRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="API.Common.Interfaces.ISupermarketSearch">
+    <Position X="19.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISupermarketSearch.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="API.Common.Enum.APITypes">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAABEAAAAAAAAAAIAIAA=</HashCode>
+      <FileName>Enum\APITypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="API.Common.Enum.ArticleNumberType">
+    <Position X="2.5" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enum\ArticleNumberType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

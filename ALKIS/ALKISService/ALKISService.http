@@ -1,0 +1,6 @@
+@ALKISService_HostAddress = http://localhost:5260
+
+GET {{ALKISService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
