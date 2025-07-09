@@ -1,4 +1,5 @@
-﻿using ALKISService.Repository;
+﻿using System.Diagnostics;
+using ALKISService.Repository;
 
 namespace ALKISService.Services
 {
@@ -46,10 +47,28 @@ namespace ALKISService.Services
             }
 
             _repo.EnsureSchema();
-
+            var stopwatch = Stopwatch.StartNew();
             var batch = _geometryService.ParseFlurstueckeFast(xmlPath);
+            stopwatch.Stop();
+
+            Console.WriteLine($"Import für Datei '{xmlPath}' hat {stopwatch.Elapsed.TotalSeconds:F2} Sekunden gedauert.");
+
             _repo.BulkInsert(batch);
-            File.Delete(xmlPath);
+            //GC.Collect();
+            //File.Delete(xmlPath);
+            // Datei asynchron löschen, Fehler ggf. loggen
+            Task.Run(() =>
+            {
+                try
+                {
+                    File.Delete(xmlPath);
+                }
+                catch (Exception ex)
+                {
+                    // Logging oder andere Behandlung, falls nötig
+                    Console.WriteLine($"Fehler beim Löschen: {ex.Message}");
+                }
+            });
         }
 
 
