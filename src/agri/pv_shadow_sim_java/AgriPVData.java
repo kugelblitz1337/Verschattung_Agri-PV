@@ -21,25 +21,77 @@ import org.locationtech.jts.geom.*;
  */
 public class AgriPVData implements Serializable{
     
-    protected String gemeindename; // Name der Gemeinde des Flurstücks
-    protected int flurstueckszaehler; // Zähler der Flurstücksnummer
-    protected int flurstuecksnenner; // Nenner der Flurstücksnummer
-    protected int amtFlaeche; // Amtliche Fläche des Flurstücks in Quadratmetern
-    protected double[][] grundstuecksgrenze; // Koordinaten der Grundstücksgrenze [0]=East, [1]=North
-    protected int points; // Anzahl der Punkte, die die Grundstücksgrenze definieren
-    protected double mine; // Minimale Ost-Koordinate (Easting) des Grundstücks
-    protected double minn; // Minimale Nord-Koordinate (Northing) des Grundstücks
-    protected double maxe; // Maximale Ost-Koordinate (Easting) des Grundstücks
-    protected double maxn; // Maximale Nord-Koordinate (Northing) des Grundstücks
+    /**
+     * Der Name der Gemeinde des Flurstücks.
+     */
+    protected String gemeindename; 
+    /**
+     * Der Zähler der Flurstücksnummer.
+     */
+    protected int flurstueckszaehler; 
+    /**
+     * Der Nenner der Flurstücksnummer.
+     */
+    protected int flurstuecksnenner; 
+    /**
+     * Die amtliche Fläche des Flurstücks in Quadratmetern.
+     */
+    protected int amtFlaeche; 
+    /**
+     * Die Koordinaten der Grundstücksgrenze.
+     * Das erste Array enthält die Ost-Koordinaten (East), das zweite die Nord-Koordinaten (North).
+     * Format: {@code grundstuecksgrenze[0]=East, grundstuecksgrenze[1]=North}.
+     */
+    protected double[][] grundstuecksgrenze; 
+    /**
+     * Die Anzahl der Punkte, die die Grundstücksgrenze definieren.
+     */
+    protected int points; 
+    /**
+     * Die minimale Ost-Koordinate (Easting) der Bounding Box des Grundstücks.
+     */
+    protected double mine; 
+    /**
+     * Die minimale Nord-Koordinate (Northing) der Bounding Box des Grundstücks.
+     */
+    protected double minn; 
+    /**
+     * Die maximale Ost-Koordinate (Easting) der Bounding Box des Grundstücks.
+     */
+    protected double maxe; 
+    /**
+     * Die maximale Nord-Koordinate (Northing) der Bounding Box des Grundstücks.
+     */
+    protected double maxn; 
     
-    protected ArrayList<Coordinate> mitlpuktPV; // Liste der Mittelpunkte der platzierten PV-Module
-    protected Polygon plotPolygon; // JTS-Polygon, das die Grundstücksgrenze repräsentiert
+    /**
+     * Eine Liste von {@code Coordinate}-Objekten, die die Mittelpunkte der platzierten PV-Module repräsentieren.
+     */
+    protected ArrayList<Coordinate> mitlpuktPV; 
+    /**
+     * Ein JTS-Polygon, das die Grundstücksgrenze repräsentiert.
+     */
+    protected Polygon plotPolygon; 
     
-    protected AgriPVGridField[][] gridFields; // Speichert die AgriPVGridField-Objekte, die jedes Gitternetzfeld auf dem Grundstück und dessen Verschattungswert repräsentieren
-    protected GeometryFactory gf = new GeometryFactory(); // JTS GeometryFactory zur Erstellung von Geometrien
+    /**
+     * Ein 2D-Array, das {@code AgriPVGridField}-Objekte speichert. Jedes Objekt repräsentiert
+     * ein Gitternetzfeld auf dem Grundstück und enthält dessen Verschattungswert und Polygon sowie einen {@code boolean inPlot}.
+     */
+    protected AgriPVGridField[][] gridFields; 
+    /**
+     * Eine JTS {@code GeometryFactory} zur Erstellung von Geometrien.
+     */
+    protected GeometryFactory gf = new GeometryFactory(); 
     
+    /**
+     * Eine Referenz zur {@code KonfigurationGUI}, um den Fortschritt und Status in der GUI zu aktualisieren.
+     */
     protected KonfigurationGUI kGUI;
     
+    /**
+     * Ein Flag, das anzeigt, ob die Simulation unterbrochen wurde.
+     * Wird auf {@code true} gesetzt, wenn der Benutzer die Simulation abbricht.
+     */
     protected boolean isInterupted;
     
     /**

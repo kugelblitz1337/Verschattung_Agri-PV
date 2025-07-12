@@ -8,7 +8,6 @@ package agri.pv_shadow_sim_java;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +28,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.algorithm.ConvexHull;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Die Klasse {@code AgriPVSimulationCalc} enthält die Kernlogik für die
@@ -263,9 +263,6 @@ public class AgriPVSimulationCalc {
         // Dies ermöglicht die parallele Berechnung der Schattenpolygone für alle Module
         // innerhalb eines einzelnen Zeitintervalls.
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-        // Berechnet die Gesamtzahl der Zeitschritte für die Fortschrittsanzeige.
-        int totalTimeSteps = calculateTotalTimeSteps(monate, intrvMin);
         
         // Gesamtanzahl der Module und Initialisierung des Fortschrittszählers
         int totalModules = data.mitlpuktPV != null ? data.mitlpuktPV.size() : 0;
@@ -279,9 +276,12 @@ public class AgriPVSimulationCalc {
             
             for (Coordinate moduleMidPoint : data.mitlpuktPV) {
                 
+                // Prüft, ob der Executor heruntergefahren wurde (z.B. durch Abbruch der Simulation)
                 if(executor.isShutdown())break;
                 
                 currentModuleCount++;
+                // Berechnet den Fortschritt und aktualisiert die GUI.
+                // Der Fortschrittsbalken geht von 0 bis 9900 für die Schattenberechnung pro Modul.
                 int progress =(int) (currentModuleCount * 9900.0 / totalModules);
                 data.kGUI.setJprgrsbrRunning(progress); // Aktualisiert die Fortschrittsanzeige in der GUI
 
@@ -289,7 +289,7 @@ public class AgriPVSimulationCalc {
                 // ZonedDateTime handhabt den Jahreswechsel und die Monatslängen automatisch.
                 ZonedDateTime currentDateTime = ZonedDateTime.of(startYear, strtmnt, 1, 0, 0, 0, 0, zoneId);
                 ZonedDateTime endDate = currentDateTime.plusMonths(monate); // Enddatum der Simulation
-                LocalDate lastDate = ZonedDateTime.now().toLocalDate();
+                LocalDate lastDate = ZonedDateTime.now().toLocalDate(); // Speichert das letzte Datum für den Tageswechsel
                 
                 // 3D-Eckpunkte des Moduls berechnen (bei fixem Modul, die Sonnenazimut/Zenit sind hier noch irrelevant)
                 final ArrayList<Coordinate> fixedModule3DCorners = getModule3DCorners(apmt, moduleMidPoint, pvAzimuth, 0.0, 0.0);
@@ -317,13 +317,16 @@ public class AgriPVSimulationCalc {
                     final double solarAzimuth = position.azimuth(); // Azimut der Sonne (final für Callable)
                     final double solarZenith = position.zenithAngle(); // Zenitwinkel der Sonne (final für Callable)
 
-                    if(solarZenith>90){
-                        // Geht zum nächsten Zeitintervall über, wenn die Sonne unterm Horizont liegt.
+                    // Wenn der Zenitwinkel größer als 90 Grad ist, ist die Sonne unter dem Horizont.
+                    // Geht zum nächsten Zeitintervall über.
+                    if(solarZenith > 90){
                         currentDateTime = currentDateTime.plusMinutes(intrvMin);
                         continue;
                     }
                     
                     LocalDate currentDate = currentDateTime.toLocalDate();
+                    // Fügt einen Null-Task hinzu, wenn sich das Datum ändert. 
+                    // Dies dient als Marker um die Schattenverlaufsfäche hier zu trennen.
                     if (currentDate.isEqual(lastDate) == false){
                         moduleShadowTasks.add(() -> {
                             return null;
@@ -337,6 +340,7 @@ public class AgriPVSimulationCalc {
                         // Erstellt eine Callable-Aufgabe für die Schattenberechnung eines einzelnen Moduls.
                         // Jede Callable-Aufgabe wird in einem separaten Thread im Executor-Service ausgeführt.
                         moduleShadowTasks.add(() -> {
+                            data.kGUI.setJprgrsbrRunning(data.kGUI.getJprgrsbrRunning(),"Berechne Schattenflächen...");
                             // 3D-Eckpunkte des Moduls berechnen (potenziell angepasst für schwenkbare Module).
                             // Da schwenkbare Module nicht implementiert sind, ist dieser Block aktuell nur ein Platzhalter.
                             // Hier würde man die Modulausrichtung optimieren und die 3D-Eckpunkte neu berechnen.
@@ -352,6 +356,7 @@ public class AgriPVSimulationCalc {
                         // Erstellt eine Callable-Aufgabe für die Schattenberechnung eines einzelnen Moduls.
                         // Jede Callable-Aufgabe wird in einem separaten Thread im Executor-Service ausgeführt.
                         moduleShadowTasks.add(() -> {
+                            data.kGUI.setJprgrsbrRunning(data.kGUI.getJprgrsbrRunning(),"Berechne Schattenflächen...");
                             return calculateShadowPolygon(fixedModule3DCorners, solarAzimuth, solarZenith);
                         });
                     }
@@ -360,7 +365,7 @@ public class AgriPVSimulationCalc {
                     currentDateTime = currentDateTime.plusMinutes(intrvMin);
                 }
                 
-                // Prüfen ob die Simulation abgebrochen wurde
+                // Prüfen ob die Simulation abgebrochen wurde, bevor die Futures abgerufen werden.
                 if((data.isInterupted || worker.isCancelled()) && !executor.isShutdown()){
                     executor.shutdown(); // Fährt den Thread-Pool herunter (wartet auf Beendigung der ausstehenden Aufgaben)
                     try {
@@ -371,12 +376,12 @@ public class AgriPVSimulationCalc {
                         }
                     } catch (InterruptedException e) {
                         executor.shutdownNow();
-                        Thread.currentThread().interrupt();
+                        Thread.currentThread().interrupt(); // Setzt das Interrupt-Flag zurück
                         System.err.println("Thread-Pool-Beendigung unterbrochen.");
                     }
                     System.out.println("Simulation abgebrochen.");
-                    worker.cancel(true);
-                    return;
+                    worker.cancel(true); // Informiert den SwingWorker über den Abbruch
+                    return; // Beendet die Methode
                 }
                 
                 // Führt alle Modul-Schattenberechnungsaufgaben parallel aus und wartet auf deren Abschluss.
@@ -387,7 +392,7 @@ public class AgriPVSimulationCalc {
                     System.err.println("Simulation unterbrochen während der parallelen Schattenberechnung: " + e.getMessage());
                     executor.shutdown();
                     Thread.currentThread().interrupt(); // Setzt das Interrupt-Flag zurück
-                    break; // Beendet die Schleife
+                    break; // Beendet die Schleife der Modul-Iterierung
                 }
 
                 if (futures != null) {
@@ -412,11 +417,11 @@ public class AgriPVSimulationCalc {
                         // da visualizeShadingOnGrid die Schattenverläufe zwischen diesen Polygonen betrachtet.
                         // Diese Methode muss den Zugriff auf 'data.gridFields' synchronisieren,
                         // da sie die gemeinsamen Daten aktualisiert.
-                        return visualizeShadingOnGrid(data, shadowsForCurrentModulPos, intrvMin);
+                        return visualizeShadingOnGrid(data, shadowsForCurrentModulPos, intrvMin, gttrNtzMeter);
                     });
                 }
                 
-                // Prüfen ob die Simulation abgebrochen wurde
+                // Prüfen ob die Simulation abgebrochen wurde, bevor weitere Aufgaben geplant werden.
                 if((data.isInterupted || worker.isCancelled()) && !executor.isShutdown()){
                     executor.shutdown(); // Fährt den Thread-Pool herunter (wartet auf Beendigung der ausstehenden Aufgaben)
                     try {
@@ -436,37 +441,36 @@ public class AgriPVSimulationCalc {
                 }
             }
             
-            
-            // Gesamtanzahl der Module und Initialisierung des Fortschrittszählers
-            data.kGUI.setJprgrsbrRunning(300,"Simulation läuft: 3%"); // Aktualisiert die Fortschrittsanzeige in der GUI
-            
+            // Aktualisiert den Fortschrittsbalken, um anzuzeigen, dass die Schattenberechnung für alle Module abgeschlossen ist.
+            // Der Wert 300 ist hier ein arbiträrer Wert, um einen kleinen Fortschritt am Anfang der Visualisierungsphase zu zeigen.
+            data.kGUI.setJprgrsbrRunning(300,"Simulation läuft: 3%");             
             System.out.println(System.nanoTime() + " Schattenvisualizierungsaufgaben gestartet");
             
-            // Führt alle Modul-Schattenvisualizierungsaufgaben parallel aus und wartet auf deren Abschluss.
+            // Führt alle Modul-Schattenvisualisierungsaufgaben parallel aus und wartet auf deren Abschluss.
             List<Future<Boolean>> futures = null;
             try {
                 futures = executor.invokeAll(moduleShadowVisualizationTasks); // Führt die Aufgaben aus und gibt Future-Objekte zurück
             } catch (InterruptedException e) {
-                System.err.println("Simulation unterbrochen während der parallelen Schattenvisualizierung: " + e.getMessage());
+                System.err.println("Simulation unterbrochen während der parallelen Schattenvisualisierung: " + e.getMessage());
                 executor.shutdown();
                 Thread.currentThread().interrupt(); // Setzt das Interrupt-Flag zurück
             }
 
             if (futures != null) {
-                // Sammelt die Ergebnisse (Schattenpolygone) von allen parallelen Aufgaben.
+                // Sammelt die Ergebnisse (Erfolgsstatus) von allen parallelen Aufgaben.
                 for (Future<Boolean> future : futures) {
                     try {
                         Boolean success = future.get(); // Holt das Ergebnis (blockiert, bis Ergebnis verfügbar ist)
-                        if(!success)System.err.println("FEHLER bei Schattenvisualizierung"); // Fügt gültige Schattenpolygone hinzu
+                        if(!success)System.err.println("FEHLER bei Schattenvisualisierung"); // Gibt eine Fehlermeldung aus, wenn die Visualisierung nicht erfolgreich war
                     } catch (Exception e) {
-                        System.err.println("Fehler beim Abrufen des parallelen Schattenvisualizierung für ein Modul: " + e.getMessage());
+                        System.err.println("Fehler beim Abrufen des parallelen Schattenvisualisierung für ein Modul: " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
             }
         }
         
-        //Prüft ob der ExecutorService noch nicht beendet wurde
+        // Prüft, ob der ExecutorService noch nicht beendet wurde und fährt ihn herunter.
         if(executor.isShutdown() == false){
             executor.shutdown(); // Fährt den Thread-Pool herunter (wartet auf Beendigung der ausstehenden Aufgaben)
             try {
@@ -477,7 +481,7 @@ public class AgriPVSimulationCalc {
                 }
             } catch (InterruptedException e) {
                 executor.shutdownNow();
-                Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt(); // Setzt das Interrupt-Flag zurück
                 System.err.println("Thread-Pool-Beendigung unterbrochen.");
             }
         }
@@ -534,8 +538,10 @@ public class AgriPVSimulationCalc {
                     };
                     // Erstellt das Polygon und speichert es im Array.
                     gridPolygon = data.gf.createPolygon(coords);
+                    // Prüft, ob das Gitternetzfeld die Grundstücksgrenze schneidet (also innerhalb liegt).
                     inPlot = gridPolygon.intersects(data.plotPolygon);
                     
+                    // Erstellt ein neues AgriPVGridField-Objekt für die aktuelle Zelle.
                     data.gridFields[row][col] = new AgriPVGridField(0.0, gridPolygon, inPlot);
                 }
             }
@@ -567,9 +573,10 @@ public class AgriPVSimulationCalc {
      * und Gitternetzpolygone enthält.
      * @param shadowPolygons Eine Liste von Schattenpolygonen, die für ein einzelnes Modul über die Zeit berechnet wurden.
      * @param intrvMin Das Zeitintervall in Minuten, für das diese Schattenpolygone gelten (wird zur Gewichtung der Verschattung verwendet).
-     * @return Boolean Ob ein Visualizirungswert addiert wurde
+     * @param gttrNtzMeter Die Gitternetzauflösung in Metern, die für die Berechnung der Gitternetz-Indizes verwendet wird.
+     * @return Boolean Ob ein Visualisierungswert addiert wurde ({@code true}), oder {@code false}, wenn keine Schatten hinzugefügt wurden.
      */
-    private static Boolean visualizeShadingOnGrid(AgriPVData data, ArrayList<Polygon> shadowPolygons, int intrvMin) {
+    private static Boolean visualizeShadingOnGrid(AgriPVData data, ArrayList<Polygon> shadowPolygons, int intrvMin, double gttrNtzMeter) {
         Boolean ret = Boolean.FALSE;
         
         // Schattenverläufe berechnen und Verschattung in das Gitternetz eintragen.
@@ -599,11 +606,25 @@ public class AgriPVSimulationCalc {
            
             // Verarbeitet die berechnete Schattenverlaufsfläche, wenn sie ein gültiges Polygon ist.
             if (schattenVerlaufsFlaeche != null && schattenVerlaufsFlaeche instanceof Polygon) {
-                // Iteriert über jedes Feld im Gitternetz.
-                for (int row = 0; row < data.gridFields.length; row++) {
-                    for (int col = 0; col < data.gridFields[0].length; col++) {
+                // Optimierung: Bestimme die Bounding Box der Schattenverlaufsfläche
+                Envelope shadowEnvelope = schattenVerlaufsFlaeche.getEnvelopeInternal();
+                
+                // Konvertiere die Bounding Box Koordinaten in Gitternetz-Indizes
+                // Sicherstellen, dass die Indizes innerhalb der Gitternetzgrenzen liegen
+                // Die Breite und Höhe der Gitternetzfelder ist gttrNtzMeter
+                int startCol = Math.max(0, (int) Math.floor((shadowEnvelope.getMinX() - data.mine) / gttrNtzMeter));
+                int endCol = Math.min(data.gridFields[0].length - 1, (int) Math.ceil((shadowEnvelope.getMaxX() - data.mine) / gttrNtzMeter) - 1);
+                int startRow = Math.max(0, (int) Math.floor((shadowEnvelope.getMinY() - data.minn) / gttrNtzMeter));
+                int endRow = Math.min(data.gridFields.length - 1, (int) Math.ceil((shadowEnvelope.getMaxY() - data.minn) / gttrNtzMeter) - 1);
+
+                // Iteriert nur über die Gitternetzfelder innerhalb der Bounding Box der Schattenverlaufsfläche.
+                for (int row = startRow; row <= endRow; row++) { 
+                    for (int col = startCol; col <= endCol; col++) {
                         
-                        if(data.gridFields[row][col].inPlot == false)continue; // Überspringt Felder außerhalb des Grundstücks
+                        // Überprüft Abbruch-Flag innerhalb der Schleife, um frühzeitig zu reagieren
+                        if(data.isInterupted)return null; 
+                        // Überspringt Felder, die außerhalb der Grundstücksgrenze liegen
+                        if(data.gridFields[row][col].inPlot == false)continue; 
                         
                         Polygon gridCell = data.gridFields[row][col].gridPolygon; // Das aktuelle Gitternetzfeld
 
@@ -634,17 +655,19 @@ public class AgriPVSimulationCalc {
                                         // dies mit der Dauer des Zeitintervalls.
                                         data.gridFields[row][col].shadingValue += percentageCovered * intrvMin;
                                     }
-                                    ret = Boolean.TRUE;
+                                    ret = Boolean.TRUE; // Setzt den Rückgabewert auf TRUE, da ein Wert addiert wurde
                                 }
                             }
                         }
                     }
-                if(data.isInterupted)return null;
                 }
             } else {
                 System.out.println("Schattenverlaufsfläche konnte nicht als Polygon gebildet werden oder ist null.");
             }
         }
+        
+        // Aktualisiert den Fortschrittsbalken in der GUI.
+        // Der Wert 9700.0 / data.mitlpuktPV.size() ist ein Anteil des restlichen Fortschritts (10000 - 300 = 9700).
         int prog =(int) (data.kGUI.getJprgrsbrRunning() + (9700.0 / data.mitlpuktPV.size()));
         data.kGUI.setJprgrsbrRunning(prog,"Simulation läuft: "+ (int)(prog/100) +"%");
         // Debugging-Ausgabe (auskommentiert): Kann verwendet werden, um die berechneten shadingValues zu überprüfen.
@@ -652,22 +675,6 @@ public class AgriPVSimulationCalc {
         //     System.out.println(Arrays.toString(data.shadingValues[row]));
         // }
         return ret;
-    }
-
-    /**
-     * Berechnet die geschätzte Gesamtzahl der Zeitschritte für die Fortschrittsanzeige.
-     * Annahme: Ein Monat hat durchschnittlich 30 Tage.
-     *
-     * @param monate Die Anzahl der Monate der Simulation.
-     * @param intrvMin Die Intervallgenauigkeit in Minuten.
-     * @return Die geschätzte Gesamtzahl der Zeitschritte.
-     */
-    private static int calculateTotalTimeSteps(int monate, int intrvMin) {
-        // Berechnung der Gesamtzahl der Minuten im Simulationszeitraum
-        // (Monate * Tage pro Monat * Stunden pro Tag * Minuten pro Stunde)
-        int totalMinutes = monate * 30 * 24 * 60; 
-        // Teilt die Gesamtminuten durch die Intervallgenauigkeit, um die Anzahl der Zeitschritte zu erhalten.
-        return totalMinutes / intrvMin;
     }
 
     /**

@@ -29,7 +29,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jpnlSteuerung" max="32767" attributes="0"/>
                   <Component id="jpnlFlurstueck" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jpnlKGD" alignment="0" max="32767" attributes="0"/>
                           <Component id="jpnlPVK" alignment="0" max="32767" attributes="0"/>
@@ -70,19 +70,42 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jbtnFlurstueckAuswahl" max="32767" attributes="0"/>
-                          <Component id="jlblGemeinde" max="32767" attributes="0"/>
-                          <Component id="jlblGemeindeText" max="32767" attributes="0"/>
-                          <Component id="jlblFlurstuecknenner" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jlblFlurstuecknennerText" max="32767" attributes="0"/>
-                          <Component id="jlblFlaeche" max="32767" attributes="0"/>
-                          <Component id="jlblFlurstueckzahler" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jlblFlurstueckzahlerText" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jbtnFlurstueckAuswahl" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlblGemeinde" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                      <Component id="jlblGemeindeText" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlblFlurstueckzahler" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                      <Component id="jlblFlurstueckzahlerText" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlblFlurstuecknenner" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                      <Component id="jlblFlurstuecknennerText" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlblFlaeche" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                      <Component id="jlblFlaecheText" alignment="1" min="-2" pref="137" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
                       </Group>
-                      <Component id="jlblFlaecheText" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jpnlFlurstueckPolygon" max="32767" attributes="0"/>
@@ -97,8 +120,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jpnlFlurstueckPolygon" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Component id="jbtnFlurstueckAuswahl" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jlblGemeinde" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jlblGemeindeText" min="-2" max="-2" attributes="0"/>
@@ -114,7 +140,6 @@
                           <Component id="jlblFlaeche" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jlblFlaecheText" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="24" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -139,12 +164,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="408" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="404" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="234" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -181,12 +206,20 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jlblFlaeche">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Fl&#xe4;che"/>
+            <Property name="text" type="java.lang.String" value="Fl&#xe4;che:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblFlaecheText">
           <Properties>
             <Property name="text" type="java.lang.String" value=" "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Flurst&#xfc;ckskonfiguration:"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -298,7 +331,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jlblPVKRand">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Rand zur Grundst&#xfc;cksgrenze (m)"/>
+            <Property name="text" type="java.lang.String" value="Rand zur Flurst&#xfc;cksgrenze (m)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtxtfldPVKReihenabstand">
@@ -308,7 +341,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jtxtfldPVKRand">
           <Properties>
-            <Property name="text" type="java.lang.String" value="0.4"/>
+            <Property name="text" type="java.lang.String" value="10"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -318,43 +351,46 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jlblUGKT" max="32767" attributes="0"/>
-                      <Component id="jlblUGKEigenschaften" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jlblUGKVisualisierung" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jchckbxOnlyPVPlacement" max="32767" attributes="0"/>
+                      <Component id="jlblUGKT" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jchckbxSSM" alignment="0" min="-2" pref="162" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jlblUGKIntervall" min="-2" pref="137" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jtxtfldUGKIntervallgenuigkeit" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="jchckbxSSM" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jlblUGKZeitspanne" max="32767" attributes="0"/>
+                                      <Component id="jcmbbxUGKZeitspanne" max="32767" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jcmbbxUGKZeitspanne" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jcmbbxUGKStartmonat" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Component id="jchckbxUGKLog" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Component id="jlblUGKStartmonat" alignment="1" min="-2" pref="93" max="-2" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Component id="jlblUGKGitternetz" min="-2" pref="136" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jtxtfldGitternetz" min="-2" pref="71" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jlblUGKStartmonat" max="32767" attributes="0"/>
+                                      <Component id="jcmbbxUGKStartmonat" pref="105" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="jlblUGKZeitspanne" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                              <Component id="jlblUGKEigenschaften" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jchckbxOnlyPVPlacement" alignment="1" max="32767" attributes="0"/>
+                              <Component id="jlblUGKVisualisierung" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="jlblUGKIntervall" min="-2" pref="171" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jtxtfldUGKIntervallgenuigkeit" min="-2" pref="71" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jchckbxUGKLog" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jlblUGKGitternetz" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jtxtfldGitternetz" min="-2" pref="71" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -390,9 +426,9 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jlblUGKEigenschaften" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jchckbxSSM" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jchckbxOnlyPVPlacement" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jchckbxSSM" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -409,6 +445,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jlblUGKEigenschaften">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Zus&#xe4;tzliche Eigenschaften:"/>
           </Properties>
         </Component>
@@ -531,6 +570,9 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jlblExportdatei">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Simulation exportieren:"/>
           </Properties>
         </Component>
@@ -549,16 +591,20 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jlblProgressText" min="-2" pref="287" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jbtnAbbrechen" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jbtnSimulationStarten" min="-2" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jlblProgressText" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jbtnAbbrechen" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jbtnSimulationStarten" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jprgrsbrRunning" alignment="0" max="32767" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
-              <Component id="jprgrsbrRunning" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -597,7 +643,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jbtnSimulationStarten">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Simulation Starten"/>
+            <Property name="text" type="java.lang.String" value="Simulation starten"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnSimulationStartenActionPerformed"/>

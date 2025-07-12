@@ -9,6 +9,7 @@ package agri.pv_shadow_sim_java;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JOptionPane;
 import javax.swing.text.NumberFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,7 +32,8 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     private NumberFormatter gradFormatter; // Formatter für Grad-Werte (Koordinaten)
     private NumberFormatter minFormatter; // Formatter für Minuten-Werte (Koordinaten)
     private NumberFormatter secFormat; // Formatter für Sekunden-Werte (Koordinaten)
-    private NumberFormatter utmFormatter; // Formatter für UTM-Koordinaten
+    private NumberFormatter deziFormatter; // Formatter für Dezimalgrad-Koordinaten
+    private int counter; // Zähler für Debugging-Zwecke (z.B. für den Import-Button)
     
     /**
      * Erstellt ein neues Formular FlurstueckEingabeGUI.
@@ -73,7 +75,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jfrmttxtfldFlurstuecknenner = new javax.swing.JFormattedTextField(zaehlerFormatter);
         jtbdpnKoordinatenEingabe = new javax.swing.JTabbedPane();
-        jpnlKoordinatenEingabe = new javax.swing.JPanel();
+        jpnlGMSEingabe = new javax.swing.JPanel();
         jtxtfldNGrad = new javax.swing.JFormattedTextField(gradFormatter);
         jlblN1 = new javax.swing.JLabel();
         jtxtfldNMinuten = new javax.swing.JFormattedTextField(minFormatter);
@@ -86,14 +88,15 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
         jlblE2 = new javax.swing.JLabel();
         jtxtfldESekunden = new javax.swing.JFormattedTextField(secFormat);
         jlblE3 = new javax.swing.JLabel();
-        jpnlETRS89_UTM = new javax.swing.JPanel();
-        jtxtfldUTMEasting = new javax.swing.JFormattedTextField(utmFormatter);
-        jtxtfldUTMNorthing = new javax.swing.JFormattedTextField(utmFormatter);
-        jlblUTMEasting = new javax.swing.JLabel();
-        jlblUTMNorthing = new javax.swing.JLabel();
+        jpnlDGEingabe = new javax.swing.JPanel();
+        jtxtfldDGNorthing = new javax.swing.JFormattedTextField(deziFormatter);
+        jtxtfldDGEasting = new javax.swing.JFormattedTextField(deziFormatter);
+        jlblDGEasting = new javax.swing.JLabel();
+        jlblDGNorthing = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jlblGemeinde = new javax.swing.JLabel();
         jcmbbxGemeinde = new javax.swing.JComboBox<>();
+        jbtnAPImakeImport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Auswahl des Flurstücks");
@@ -127,6 +130,11 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
         jlblFlurstuecknummer.setText("Flurstückzähler");
 
         jfrmttxtfldFlurstueckzahler.setColumns(10);
+        jfrmttxtfldFlurstueckzahler.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jfrmttxtfldFlurstueckzahlerFocusGained(evt);
+            }
+        });
         jfrmttxtfldFlurstueckzahler.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jfrmttxtfldFlurstueckzahlerKeyPressed(evt);
@@ -136,6 +144,11 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
         jLabel1.setText("Flurstücksnenner");
 
         jfrmttxtfldFlurstuecknenner.setColumns(10);
+        jfrmttxtfldFlurstuecknenner.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jfrmttxtfldFlurstuecknennerFocusGained(evt);
+            }
+        });
         jfrmttxtfldFlurstuecknenner.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jfrmttxtfldFlurstuecknennerKeyPressed(evt);
@@ -256,44 +269,44 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
         jlblE3.setText("'' E");
 
-        javax.swing.GroupLayout jpnlKoordinatenEingabeLayout = new javax.swing.GroupLayout(jpnlKoordinatenEingabe);
-        jpnlKoordinatenEingabe.setLayout(jpnlKoordinatenEingabeLayout);
-        jpnlKoordinatenEingabeLayout.setHorizontalGroup(
-            jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnlKoordinatenEingabeLayout.createSequentialGroup()
+        javax.swing.GroupLayout jpnlGMSEingabeLayout = new javax.swing.GroupLayout(jpnlGMSEingabe);
+        jpnlGMSEingabe.setLayout(jpnlGMSEingabeLayout);
+        jpnlGMSEingabeLayout.setHorizontalGroup(
+            jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnlGMSEingabeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtxtfldEGrad, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtfldNGrad, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlblE1, javax.swing.GroupLayout.DEFAULT_SIZE, 13, Short.MAX_VALUE)
                     .addComponent(jlblN1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpnlKoordinatenEingabeLayout.createSequentialGroup()
+                .addGroup(jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpnlGMSEingabeLayout.createSequentialGroup()
                         .addComponent(jtxtfldEMinuten, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jlblE2, javax.swing.GroupLayout.DEFAULT_SIZE, 11, Short.MAX_VALUE))
-                    .addGroup(jpnlKoordinatenEingabeLayout.createSequentialGroup()
+                    .addGroup(jpnlGMSEingabeLayout.createSequentialGroup()
                         .addComponent(jtxtfldNMinuten, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jlblN2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jtxtfldNSekunden, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtfldESekunden, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlblN3)
                     .addComponent(jlblE3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(196, 196, 196))
         );
-        jpnlKoordinatenEingabeLayout.setVerticalGroup(
-            jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnlKoordinatenEingabeLayout.createSequentialGroup()
+        jpnlGMSEingabeLayout.setVerticalGroup(
+            jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnlGMSEingabeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtxtfldNGrad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlblN1)
                     .addComponent(jlblN2)
@@ -301,7 +314,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
                     .addComponent(jlblN3)
                     .addComponent(jtxtfldNMinuten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jpnlKoordinatenEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jpnlGMSEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtxtfldEGrad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlblE1)
                     .addComponent(jlblE2)
@@ -311,72 +324,70 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        jtbdpnKoordinatenEingabe.addTab("Koordinaten", jpnlKoordinatenEingabe);
+        jtbdpnKoordinatenEingabe.addTab("GMS ", jpnlGMSEingabe);
 
-        jtxtfldUTMEasting.setColumns(12);
-        jtxtfldUTMEasting.setToolTipText("~ 470 000 m");
-        jtxtfldUTMEasting.addFocusListener(new java.awt.event.FocusAdapter() {
+        jtxtfldDGNorthing.setColumns(12);
+        jtxtfldDGNorthing.setToolTipText("");
+        jtxtfldDGNorthing.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jtxtfldUTMEastingFocusGained(evt);
+                jtxtfldDGNorthingFocusGained(evt);
             }
         });
-        jtxtfldUTMEasting.addKeyListener(new java.awt.event.KeyAdapter() {
+        jtxtfldDGNorthing.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtxtfldUTMEastingKeyPressed(evt);
+                jtxtfldDGNorthingKeyPressed(evt);
             }
         });
 
-        jtxtfldUTMNorthing.setColumns(12);
-        jtxtfldUTMNorthing.setToolTipText("~ 5 340 000 m");
-        jtxtfldUTMNorthing.addFocusListener(new java.awt.event.FocusAdapter() {
+        jtxtfldDGEasting.setColumns(12);
+        jtxtfldDGEasting.setToolTipText("");
+        jtxtfldDGEasting.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jtxtfldUTMNorthingFocusGained(evt);
+                jtxtfldDGEastingFocusGained(evt);
             }
         });
-        jtxtfldUTMNorthing.addKeyListener(new java.awt.event.KeyAdapter() {
+        jtxtfldDGEasting.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtxtfldUTMNorthingKeyPressed(evt);
+                jtxtfldDGEastingKeyPressed(evt);
             }
         });
 
-        jlblUTMEasting.setText("Easting");
-        jlblUTMEasting.setToolTipText("~ 470 000 m");
+        jlblDGEasting.setText("Längengrad");
+        jlblDGEasting.setToolTipText("");
 
-        jlblUTMNorthing.setText("Northing");
-        jlblUTMNorthing.setToolTipText("~ 5 340 000 m");
+        jlblDGNorthing.setText("Breitengrad");
+        jlblDGNorthing.setToolTipText("");
 
-        javax.swing.GroupLayout jpnlETRS89_UTMLayout = new javax.swing.GroupLayout(jpnlETRS89_UTM);
-        jpnlETRS89_UTM.setLayout(jpnlETRS89_UTMLayout);
-        jpnlETRS89_UTMLayout.setHorizontalGroup(
-            jpnlETRS89_UTMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnlETRS89_UTMLayout.createSequentialGroup()
+        javax.swing.GroupLayout jpnlDGEingabeLayout = new javax.swing.GroupLayout(jpnlDGEingabe);
+        jpnlDGEingabe.setLayout(jpnlDGEingabeLayout);
+        jpnlDGEingabeLayout.setHorizontalGroup(
+            jpnlDGEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnlDGEingabeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpnlETRS89_UTMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jtxtfldUTMEasting)
-                    .addComponent(jtxtfldUTMNorthing, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
+                .addGroup(jpnlDGEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jtxtfldDGNorthing)
+                    .addComponent(jtxtfldDGEasting, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpnlETRS89_UTMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jlblUTMEasting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlblUTMNorthing, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addGroup(jpnlDGEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlblDGNorthing, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlblDGEasting))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
-        jpnlETRS89_UTMLayout.setVerticalGroup(
-            jpnlETRS89_UTMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnlETRS89_UTMLayout.createSequentialGroup()
+        jpnlDGEingabeLayout.setVerticalGroup(
+            jpnlDGEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnlDGEingabeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpnlETRS89_UTMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtxtfldUTMEasting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlblUTMEasting))
+                .addGroup(jpnlDGEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtxtfldDGNorthing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlblDGNorthing))
                 .addGap(18, 18, 18)
-                .addGroup(jpnlETRS89_UTMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtxtfldUTMNorthing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlblUTMNorthing))
+                .addGroup(jpnlDGEingabeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtxtfldDGEasting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlblDGEasting))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        jlblUTMEasting.getAccessibleContext().setAccessibleDescription("");
-
-        jtbdpnKoordinatenEingabe.addTab("ETRS89/UTM", jpnlETRS89_UTM);
+        jtbdpnKoordinatenEingabe.addTab("Dezimalgrad", jpnlDGEingabe);
 
         jtbdpnFlurKoord.addTab("Koordinaten", jtbdpnKoordinatenEingabe);
 
@@ -405,6 +416,14 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jbtnAPImakeImport.setText(" ");
+        jbtnAPImakeImport.setVisible(false);
+        jbtnAPImakeImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAPImakeImportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -415,7 +434,8 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jtbdpnFlurKoord)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jbtnAPImakeImport)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtnAbbrechen)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtnUebernehmen)))
@@ -431,7 +451,8 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnUebernehmen)
-                    .addComponent(jbtnAbbrechen))
+                    .addComponent(jbtnAbbrechen)
+                    .addComponent(jbtnAPImakeImport))
                 .addContainerGap())
         );
 
@@ -444,22 +465,68 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
      * Dies stellt sicher, dass die Benutzereingaben korrekt formatiert und validiert werden.
      */
     private void init(){
-        this.aAC = new ALKISApiClient("http://localhost:5260/api/Flurstueck"); // Initialisiert den ALKIS API Client
+        // Initialisiert den ALKIS API Client mit der Basis-URL des lokalen Servers.
+        this.aAC = new ALKISApiClient("http://localhost:5000/api/Flurstueck"); 
         
         // Formatter für ganze Zahlen (z.B. Flurstückzähler/nenner)
         NumberFormat format = NumberFormat.getIntegerInstance();
         format.setGroupingUsed(false); // Keine Tausenderpunkte verwenden
 
-        NumberFormatter zaehlerFormatter = new NumberFormatter(format);
+        zaehlerFormatter = new NumberFormatter(format);
         zaehlerFormatter.setValueClass(Integer.class);
         zaehlerFormatter.setAllowsInvalid(false); // Ungültige Eingaben nicht zulassen
-        zaehlerFormatter.setMinimum(1); // Nur positive Zahlen größer 0 zulassen
+        zaehlerFormatter.setMinimum(0); // Nur positive Zahlen größer 0 zulassen
+
+        // Formatter für Grad-Werte (GMS)
+        gradFormatter = new NumberFormatter(format);
+        gradFormatter.setValueClass(Integer.class);
+        gradFormatter.setAllowsInvalid(false);
+        gradFormatter.setMinimum(-180); // Grad kann 0 sein
+        gradFormatter.setMaximum(180); // Maximal 180 Grad
+
+        // Formatter für Minuten-Werte (GMS)
+        minFormatter = new NumberFormatter(format);
+        minFormatter.setValueClass(Integer.class);
+        minFormatter.setAllowsInvalid(false);
+        minFormatter.setMinimum(0);
+        minFormatter.setMaximum(59); // Minuten gehen von 0 bis 59
+
+        // Formatter für Sekunden-Werte (GMS), erlaubt Dezimalstellen
+        NumberFormat secFormatRaw = NumberFormat.getInstance();
+        secFormatRaw.setMinimumFractionDigits(2); // Mindestens 2 Dezimalstellen
+        secFormatRaw.setMaximumFractionDigits(5); // Maximal 5 Dezimalstellen
+        secFormatRaw.setGroupingUsed(false);
+
+        secFormat = new NumberFormatter(secFormatRaw);
+        secFormat.setValueClass(Double.class);
+        secFormat.setAllowsInvalid(false);
+        secFormat.setMinimum(0.0);
+        secFormat.setMaximum(59.99999); // Sekunden gehen von 0.0 bis 59.99999
+
+        // Formatter für Dezimalgrad-Werte (UTM/Dezimalgrad), erlaubt Dezimalstellen
+        NumberFormat deziFormatRaw = NumberFormat.getInstance();
+        deziFormatRaw.setMinimumFractionDigits(6); // Mindestens 6 Dezimalstellen für Genauigkeit
+        deziFormatRaw.setMaximumFractionDigits(9); // Maximal 9 Dezimalstellen
+        deziFormatRaw.setGroupingUsed(false);
+
+        deziFormatter = new NumberFormatter(deziFormatRaw);
+        deziFormatter.setValueClass(Double.class);
+        deziFormatter.setAllowsInvalid(false);
+        // Setzen Sie realistische Min/Max-Werte für Längen- und Breitengrade:
+        // Breitengrad von -90 bis +90
+        //deziFormatter.setMinimum(-90.0); 
+        //deziFormatter.setMaximum(90.0);
+        // Für Längengrad:
+        deziFormatter.setMinimum(-180.0);
+        deziFormatter.setMaximum(180.0);
+        
+        counter = 0; // Initialisiert den Debug-Zähler
     }
     
     /**
      * Behandelt das ActionEvent des "Abbrechen"-Buttons.
-     * Ruft die Methode {@code jbtnAbbrechenPressed()} auf.
-     * @param evt Das ActionEvent.
+     * Ruft die Methode {@code jbtnAbbrechenPressed()} auf, um das Fenster zu schließen.
+     * @param evt Das ActionEvent, das durch das Klicken des Buttons ausgelöst wird.
      */
     private void jbtnAbbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAbbrechenActionPerformed
         jbtnAbbrechenPressed();
@@ -467,8 +534,8 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
     /**
      * Behandelt das ActionEvent des "Übernehmen"-Buttons.
-     * Ruft die Methode {@code jbtnUebernehmenPressed()} auf.
-     * @param evt Das ActionEvent.
+     * Ruft die Methode {@code jbtnUebernehmenPressed()} auf, um die Flurstücksdaten zu verarbeiten.
+     * @param evt Das ActionEvent, das durch das Klicken des Buttons ausgelöst wird.
      */
     private void jbtnUebernehmenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUebernehmenActionPerformed
         jbtnUebernehmenPressed();
@@ -476,7 +543,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
     /**
      * Wählt den gesamten Text im Feld für Nord-Grad aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
     private void jtxtfldNGradFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldNGradFocusGained
         jtxtfldNGrad.selectAll();
@@ -484,7 +551,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
     /**
      * Wählt den gesamten Text im Feld für Nord-Minuten aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
     private void jtxtfldNMinutenFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldNMinutenFocusGained
         jtxtfldNMinuten.selectAll();
@@ -492,7 +559,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
     /**
      * Wählt den gesamten Text im Feld für Nord-Sekunden aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
     private void jtxtfldNSekundenFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldNSekundenFocusGained
         jtxtfldNSekunden.selectAll();
@@ -500,7 +567,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
     /**
      * Wählt den gesamten Text im Feld für Ost-Grad aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
     private void jtxtfldEGradFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldEGradFocusGained
         jtxtfldEGrad.selectAll();
@@ -508,7 +575,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
     /**
      * Wählt den gesamten Text im Feld für Ost-Minuten aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
     private void jtxtfldEMinutenFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldEMinutenFocusGained
         jtxtfldEMinuten.selectAll();
@@ -516,32 +583,37 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
 
     /**
      * Wählt den gesamten Text im Feld für Ost-Sekunden aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
     private void jtxtfldESekundenFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldESekundenFocusGained
         jtxtfldESekunden.selectAll();
     }//GEN-LAST:event_jtxtfldESekundenFocusGained
 
     /**
-     * Wählt den gesamten Text im Feld für UTM-Easting aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * Wählt den gesamten Text im Feld für Dezimalgrad Northing (Breitengrad) aus, wenn es den Fokus erhält.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
-    private void jtxtfldUTMEastingFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldUTMEastingFocusGained
-        jtxtfldUTMEasting.selectAll();
-    }//GEN-LAST:event_jtxtfldUTMEastingFocusGained
+    private void jtxtfldDGNorthingFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldDGNorthingFocusGained
+        jtxtfldDGNorthing.selectAll();
+    }//GEN-LAST:event_jtxtfldDGNorthingFocusGained
 
     /**
-     * Wählt den gesamten Text im Feld für UTM-Northing aus, wenn es den Fokus erhält.
-     * @param evt Das FocusEvent.
+     * Wählt den gesamten Text im Feld für Dezimalgrad Easting (Längengrad) aus, wenn es den Fokus erhält.
+     * Erhöht einen internen Zähler für Debugging-Zwecke und macht einen versteckten Button sichtbar.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
      */
-    private void jtxtfldUTMNorthingFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldUTMNorthingFocusGained
-        jtxtfldUTMNorthing.selectAll();
-    }//GEN-LAST:event_jtxtfldUTMNorthingFocusGained
+    private void jtxtfldDGEastingFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtfldDGEastingFocusGained
+        jtxtfldDGEasting.selectAll();
+        counter++;
+        if(counter > 10){ // Nach 10 Fokus-Ereignissen wird der Import-Button sichtbar
+            jbtnAPImakeImport.setVisible(true);
+        }
+    }//GEN-LAST:event_jtxtfldDGEastingFocusGained
 
     /**
      * Behandelt den Tastendruck im Feld für Nord-Grad.
      * Bei "Enter" wird der Fokus auf das Feld für Nord-Minuten verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jtxtfldNGradKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldNGradKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -552,7 +624,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck im Feld für Nord-Minuten.
      * Bei "Enter" wird der Fokus auf das Feld für Nord-Sekunden verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jtxtfldNMinutenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldNMinutenKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -563,7 +635,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck im Feld für Nord-Sekunden.
      * Bei "Enter" wird der Fokus auf das Feld für Ost-Grad verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jtxtfldNSekundenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldNSekundenKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -574,7 +646,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck im Feld für Ost-Grad.
      * Bei "Enter" wird der Fokus auf das Feld für Ost-Minuten verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jtxtfldEGradKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldEGradKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -585,7 +657,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck im Feld für Ost-Minuten.
      * Bei "Enter" wird der Fokus auf das Feld für Ost-Sekunden verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jtxtfldEMinutenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldEMinutenKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -596,7 +668,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck im Feld für Ost-Sekunden.
      * Bei "Enter" wird der Fokus auf den "Übernehmen"-Button verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jtxtfldESekundenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldESekundenKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -605,31 +677,31 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxtfldESekundenKeyPressed
 
     /**
-     * Behandelt den Tastendruck im Feld für UTM-Easting.
-     * Bei "Enter" wird der Fokus auf das Feld für UTM-Northing verschoben.
-     * @param evt Das KeyEvent.
+     * Behandelt den Tastendruck im Feld für Dezimalgrad Northing (Breitengrad).
+     * Bei "Enter" wird der Fokus auf das Feld für Dezimalgrad Easting (Längengrad) verschoben.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
-    private void jtxtfldUTMEastingKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldUTMEastingKeyPressed
+    private void jtxtfldDGNorthingKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldDGNorthingKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
-            jtxtfldUTMNorthing.grabFocus();
+            jtxtfldDGEasting.grabFocus();
         }
-    }//GEN-LAST:event_jtxtfldUTMEastingKeyPressed
+    }//GEN-LAST:event_jtxtfldDGNorthingKeyPressed
 
     /**
-     * Behandelt den Tastendruck im Feld für UTM-Northing.
+     * Behandelt den Tastendruck im Feld für Dezimalgrad Easting (Längengrad).
      * Bei "Enter" wird der Fokus auf den "Übernehmen"-Button verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
-    private void jtxtfldUTMNorthingKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldUTMNorthingKeyPressed
+    private void jtxtfldDGEastingKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtfldDGEastingKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
             jbtnUebernehmen.grabFocus();
         }
-    }//GEN-LAST:event_jtxtfldUTMNorthingKeyPressed
+    }//GEN-LAST:event_jtxtfldDGEastingKeyPressed
 
     /**
      * Behandelt den Tastendruck auf dem "Abbrechen"-Button.
      * Bei "Enter" wird die Methode zum Abbrechen des Dialogs aufgerufen.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jbtnAbbrechenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jbtnAbbrechenKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -640,7 +712,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck auf dem "Übernehmen"-Button.
      * Bei "Enter" wird die Methode zum Übernehmen der Eingabe aufgerufen.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jbtnUebernehmenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jbtnUebernehmenKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -651,7 +723,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck im Feld für den Flurstückzähler.
      * Bei "Enter" wird der Fokus auf das Feld für den Flurstücksnenner verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jfrmttxtfldFlurstueckzahlerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jfrmttxtfldFlurstueckzahlerKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -662,7 +734,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Behandelt den Tastendruck im Feld für den Flurstücksnenner.
      * Bei "Enter" wird der Fokus auf den "Übernehmen"-Button verschoben.
-     * @param evt Das KeyEvent.
+     * @param evt Das KeyEvent, das durch einen Tastendruck ausgelöst wird.
      */
     private void jfrmttxtfldFlurstuecknennerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jfrmttxtfldFlurstuecknennerKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -670,9 +742,40 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jfrmttxtfldFlurstuecknennerKeyPressed
 
+    
+    /**
+     * Behandelt das ActionEvent des versteckten Import-Buttons.
+     * Ruft die asynchrone Import-Methode des ALKISApiClient auf und verbirgt den Button wieder.
+     * @param evt Das ActionEvent, das durch das Klicken des Buttons ausgelöst wird.
+     */
+    private void jbtnAPImakeImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAPImakeImportActionPerformed
+        try {
+            aAC.makeImportAsync(); // Startet den Importvorgang asynchron
+            jbtnAPImakeImport.setVisible(false); // Versteckt den Button nach dem Klick
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Gibt Fehler auf der Konsole aus
+        }
+    }//GEN-LAST:event_jbtnAPImakeImportActionPerformed
+
+    /**
+     * Wählt den gesamten Text im Feld für Flurstückzahler aus, wenn es den Fokus erhält.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
+     */
+    private void jfrmttxtfldFlurstueckzahlerFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jfrmttxtfldFlurstueckzahlerFocusGained
+        jfrmttxtfldFlurstueckzahler.selectAll();
+    }//GEN-LAST:event_jfrmttxtfldFlurstueckzahlerFocusGained
+
+    /**
+     * Wählt den gesamten Text im Feld für Flurstücknenner aus, wenn es den Fokus erhält.
+     * @param evt Das FocusEvent, das durch das Erhalten des Fokus ausgelöst wird.
+     */
+    private void jfrmttxtfldFlurstuecknennerFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jfrmttxtfldFlurstuecknennerFocusGained
+        jfrmttxtfldFlurstuecknenner.selectAll();
+    }//GEN-LAST:event_jfrmttxtfldFlurstuecknennerFocusGained
+
     /**
      * Hauptmethode zum Starten der Anwendung.
-     * Erstellt und zeigt das FlurstückEingabeGUI-Fenster an.
+     * Erstellt und zeigt das FlurstueckEingabeGUI-Fenster an.
      *
      * @param args Die Kommandozeilenargumente (nicht verwendet).
      */
@@ -719,30 +822,64 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
      * Verarbeitet die Benutzereingaben und ruft die ALKIS-API auf, um die Flurstücksdaten abzurufen.
      * Aktualisiert das {@code AgriPVData}-Objekt mit den abgerufenen Informationen
      * und benachrichtigt die {@code KonfigurationGUI} über die Auswahl des Flurstücks.
+     * Zeigt eine Warnmeldung an, wenn kein passendes Flurstück gefunden wurde.
      */
     private void jbtnUebernehmenPressed(){
         try {
             String testjson;
             // Prüft, welcher Tab ausgewählt ist (Flurstücknummer oder Koordinaten)
             if(jtbdpnFlurKoord.getSelectedIndex()==0){ // Flurstücknummer-Tab
+                // Prüft ob Felder leer sind und handelt dem entsprechend
+                if(jfrmttxtfldFlurstueckzahler.getText().strip().equals("")){
+                    jfrmttxtfldFlurstueckzahler.grabFocus();
+                    return;
+                } else if(jfrmttxtfldFlurstuecknenner.getText().strip().equals("")){
+                    jfrmttxtfldFlurstuecknenner.setText("0");
+                }
+                
                 // Ruft die API mit Zähler, Nenner und ausgewählter Gemarkung auf
                 testjson = aAC.getByCounterNominator(jfrmttxtfldFlurstueckzahler.getText(), jfrmttxtfldFlurstuecknenner.getText(), jcmbbxGemeinde.getSelectedItem().toString());
+                JSONArray tmp = new JSONArray(testjson);
+                testjson = tmp.getJSONObject(0).toString(); // Nimmt das erste Ergebnis, falls mehrere gefunden werden
             
             }else if(jtbdpnKoordinatenEingabe.getSelectedIndex()==0){ // Koordinaten-Tab (Grad/Min/Sek)
+                // Prüft ob Felder leer sind und handelt dem entsprechend
+                if(jtxtfldNGrad.getText().strip().equals("") || jtxtfldNMinuten.getText().strip().equals("") || jtxtfldNSekunden.getText().strip().equals("")){
+                    jtxtfldNGrad.grabFocus();
+                    return;
+                } 
+                if(jtxtfldEGrad.getText().strip().equals("") || jtxtfldEMinuten.getText().strip().equals("") || jtxtfldESekunden.getText().strip().equals("")){
+                    jtxtfldEGrad.grabFocus();
+                    return;
+                }
+                
                 // Konvertiert Grad/Min/Sek in Dezimalgrad und ruft die API auf
-                double latitude = data.dmsToDecimal(Integer.parseInt(jtxtfldNGrad.getText().strip()), Integer.parseInt(jtxtfldNMinuten.getText().strip()), Double.parseDouble(jtxtfldNSekunden.getText().strip()));
-                double longitude = data.dmsToDecimal(Integer.parseInt(jtxtfldEGrad.getText().strip()), Integer.parseInt(jtxtfldEMinuten.getText().strip()), Double.parseDouble(jtxtfldESekunden.getText().strip()));
+                double latitude = data.dmsToDecimal(Integer.parseInt(jtxtfldNGrad.getText().strip()), Integer.parseInt(jtxtfldNMinuten.getText().strip()), Double.parseDouble(jtxtfldNSekunden.getText().strip().replace(",", ".")));
+                double longitude = data.dmsToDecimal(Integer.parseInt(jtxtfldEGrad.getText().strip()), Integer.parseInt(jtxtfldEMinuten.getText().strip()), Double.parseDouble(jtxtfldESekunden.getText().strip().replace(",", ".")));
                 testjson = aAC.getByCoordinate(latitude, longitude, jcmbbxGemeinde.getSelectedItem().toString());
             
-            } else { // ETRS89/UTM-Tab (Nicht implementiert)
-                System.out.println("Die Eingabe über ETRS89/UTM-Koordinaten ist noch nicht implementiert.");
-                // Platzhalter-JSON für nicht implementierte Methode (sollte durch echten API-Aufruf ersetzt werden)
-                testjson = "{\"dateiname\":\"ALKIS-oE_089890_Friedrichshafen_nas.xml\",\"zaehler\":\"645\",\"nenner\":\"0\",\"wkt\":\"POLYGON ((534834.79 5278394.42, 534835.178 5278391.123, 534835.84 5278387.87, 534835.84 5278387.87, 534854.57 5278399.42, 534854.57 5278399.42, 534877.57 5278362.08, 534877.57 5278362.08, 534866.08 5278355, 534866.08 5278355, 534873.08 5278343.63, 534873.08 5278343.63, 534863.86 5278339.77, 534863.86 5278339.77, 534874.62 5278323.3, 534874.62 5278323.3, 534879.31 5278325.77, 534879.31 5278325.77, 534887.8 5278329.36, 534887.8 5278329.36, 534898.08 5278332.08, 534898.08 5278332.08, 534913.48 5278335.35, 534913.48 5278335.35, 534930.62 5278337.92, 534930.62 5278337.92, 534955.28 5278340.05, 534955.28 5278340.05, 534953.43 5278307.8, 534953.43 5278307.8, 534956 5278277.78, 534956 5278277.78, 534957.02 5278267.65, 534957.02 5278267.65, 534957.08 5278267.04, 534957.08 5278267.04, 534966.49 5278267.67, 534966.49 5278267.67, 534976.5 5278267.98, 534976.5 5278267.98, 534986.48 5278267.99, 534986.48 5278267.99, 534996.48 5278267.89, 534996.48 5278267.89, 535006.48 5278267.63, 535006.48 5278267.63, 535016.46 5278267.17, 535016.46 5278267.17, 535026.43 5278266.57, 535026.43 5278266.57, 535300.45 5278245.35, 535300.45 5278245.35, 535364.87 5278240.35, 535364.87 5278240.35, 535371.75 5278240.11, 535371.75 5278240.11, 535374.44 5278240.11, 535374.44 5278240.11, 535383.18 5278240.7, 535383.18 5278240.7, 535389.693 5278241.806, 535396.11 5278243.38, 535396.11 5278243.38, 535398.442 5278244.484, 535400.62 5278245.87, 535400.62 5278245.87, 535409.833 5278249.559, 535418.53 5278254.34, 535418.53 5278254.34, 535423.505 5278257.73, 535428.24 5278261.45, 535428.24 5278261.45, 535434.072 5278266.82, 535439.55 5278272.55, 535439.55 5278272.55, 535449.84 5278283.67, 535449.84 5278283.67, 535461.62 5278296.24, 535461.62 5278296.24, 535466.05 5278301.84, 535466.05 5278301.84, 535473.25 5278311.08, 535473.25 5278311.08, 535474.71 5278313.1, 535474.71 5278313.1, 535526.89 5278385.49, 535526.89 5278385.49, 535483.46 5278418.61, 535483.46 5278418.61, 535481.65 5278416.22, 535481.65 5278416.22, 535457.81 5278434.41, 535457.81 5278434.41, 535421.24 5278462.3, 535421.24 5278462.3, 535461.73 5278515.5, 535461.73 5278515.5, 535462.883 5278518.222, 535462.57 5278521.16, 535462.57 5278521.16, 535431.58 5278537.07, 535431.58 5278537.07, 535421.089 5278523.079, 535409.27 5278510.19, 535409.27 5278510.19, 535397.638 5278499.491, 535385.1 5278489.87, 535385.1 5278489.87, 535379.349 5278486.173, 535373.46 5278482.7, 535373.46 5278482.7, 535349.784 5278471.166, 535324.66 5278463.27, 535324.66 5278463.27, 534843.09 5278500.87, 534843.09 5278500.87, 534842.61 5278480.08, 534842.61 5278480.08, 534841.05 5278413.16, 534841.05 5278413.16, 534837.61 5278412.41, 534837.61 5278412.41, 534835.155 5278403.578, 534834.79 5278394.42))\",\"amtlicheFlaeche\":134949}";
-                String testjson1 = "{\"dateiname\":\"ALKIS-oE_089760_Schwäbisch_Hall_nas.zip\",\"zaehler\":\"50\",\"nenner\":\"0\",\"koordinaten\":[[470109.19,5343969.15],[470109.324,5343966.923],[470109.98,5343964.79],[470109.98,5343964.79],[470112.246,5343964.165],[470114.57,5343963.81],[470114.57,5343963.81],[470118.705,5343964.296],[470122.07,5343966.75],[470122.07,5343966.75],[470124.09,5343969.62],[470124.09,5343969.62],[470134.59,5343986.84],[470134.59,5343986.84],[470139.705,5343996.219],[470144.22,5344005.9],[470144.22,5344005.9],[470157.67,5344036.65],[470157.67,5344036.65],[470162.938,5344047.74],[470168.72,5344058.57],[470168.72,5344058.57],[470164.32,5344070.26],[470164.32,5344070.26],[470160.45,5344052.63],[470160.45,5344052.63],[470152.0,5344034.65],[470152.0,5344034.65],[470146.96,5344021.84],[470146.96,5344021.84],[470142.58,5344011.16],[470142.58,5344011.16],[470140.61,5344009.93],[470140.61,5344009.93],[470134.18,5343996.31],[470134.18,5343996.31],[470135.15,5343993.77],[470135.15,5343993.77],[470120.33,5343969.41],[470120.33,5343969.41],[470115.86,5343970.53],[470115.86,5343970.53],[470115.14,5343970.05],[470115.14,5343970.05],[470114.45,5343967.58],[470114.45,5343967.58],[470109.19,5343969.15]], \"amtlicheFlaeche\":47714}";
-                String testjson2 = "{\"dateiname\":\"ALKIS-oE_089760_Salem_nas.zip\",\"zaehler\":\"33\",\"nenner\":\"0\",\"koordinaten\":[[520898.08,5291420.91],[520905.12,5291355.34],[520905.12,5291355.34],[520909.82,5291297.57],[520909.82,5291297.57],[520912.19,5291265.95],[520912.19,5291265.95],[520932.73,5291269.1],[520932.73,5291269.1],[520933.19,5291298.17],[520933.19,5291298.17],[520934.47,5291318.35],[520934.47,5291318.35],[520935.85,5291345.98],[520935.85,5291345.98],[520937.26,5291364.69],[520937.26,5291364.69],[520937.38,5291372.58],[520937.38,5291372.58],[520936.76,5291378.75],[520936.76,5291378.75],[520936.95,5291387.63],[520936.95,5291387.63],[520939.79,5291399.92],[520939.79,5291399.92],[520940.81,5291409.79],[520940.81,5291409.79],[520940.78,5291416.54],[520940.78,5291416.54],[520940.15,5291419.03],[520940.15,5291419.03],[520936.48,5291421.84],[520936.48,5291421.84],[520932.75,5291422.73],[520932.75,5291422.73],[520925.01,5291422.79],[520925.01,5291422.79],[520903.62,5291423.07],[520903.62,5291423.07],[520899.52,5291422.64],[520899.52,5291422.64],[520898.08,5291420.91]], \"amtlicheFlaeche\":47714}";
-                String testjson3 = "{\"dateiname\":\"ALKIS-oE_086520_Bodman_nas.zip\",\"zaehler\":\"744\",\"nenner\":\"0\",\"koordinaten\":[[500647.28,5294258.25],[500648.08,5294239.22],[500648.08,5294239.22],[500838.79,5294216.63],[500838.79,5294216.63],[500840,5294233.95],[500840,5294233.95],[500647.28,5294258.25]], \"amtlicheFlaeche\":47714}";
-                String testjson4 = "{\"dateiname\":\"ALKIS-oE_082304_Pommertsweiler_nas.xml\", \"zaehler\": \"261\", \"nenner\": \"0\", \"wkt\": \"POLYGON ((572737.34 5420362.76, 572741.72 5420352.26, 572741.72 5420352.26, 572746.45 5420330.32, 572746.45 5420330.32, 572753.05 5420316.37, 572753.05 5420316.37, 572754.61 5420313.93, 572754.61 5420313.93, 572768.89 5420323.47, 572768.89 5420323.47, 572775.46 5420321.56, 572775.46 5420321.56, 572792.3 5420301.63, 572792.3 5420301.63, 572787.96 5420291.48, 572787.96 5420291.48, 572788.31 5420258.31, 572788.31 5420258.31, 572795.77 5420246.14, 572795.77 5420246.14, 572810.18 5420245.53, 572810.18 5420245.53, 572827.14 5420249.99, 572827.14 5420249.99, 572854.5 5420252.26, 572854.5 5420252.26, 572885.77 5420245.08, 572885.77 5420245.08, 572906.76 5420242.25, 572906.76 5420242.25, 572942.35 5420248.53, 572942.35 5420248.53, 572955.65 5420223.72, 572955.65 5420223.72, 572957.68 5420210.07, 572957.68 5420210.07, 572957.71 5420199.26, 572957.71 5420199.26, 572976.26 5420198.59, 572976.26 5420198.59, 572997.51 5420197.83, 572997.51 5420197.83, 573010.59 5420207.3, 573010.59 5420207.3, 573022.51 5420221.09, 573022.51 5420221.09, 573043.09 5420233.2, 573043.09 5420233.2, 573052.52 5420236.9, 573052.52 5420236.9, 573034.64 5420276.15, 573034.64 5420276.15, 573034.02 5420279.55, 573034.02 5420279.55, 573028.39 5420291.65, 573028.39 5420291.65, 573041.06 5420315.26, 573041.06 5420315.26, 573056.9 5420343.39, 573056.9 5420343.39, 573073.33 5420374.05, 573073.33 5420374.05, 573079.5 5420398.66, 573079.5 5420398.66, 573080.25 5420401.21, 573080.25 5420401.21, 573050.32 5420408.39, 573050.32 5420408.39, 573038.73 5420417.49, 573038.73 5420417.49, 573028.31 5420432.89, 573028.31 5420432.89, 572737.34 5420362.76))\", \"amtlicheFlaeche\":47714}";
-                testjson = testjson4;
+            } else { // Dezimalgrad-Tab
+                // Prüft ob Felder leer sind und handelt dem entsprechend
+                if(jtxtfldDGNorthing.getText().strip().equals("")){
+                    jtxtfldNGrad.grabFocus();
+                    return;
+                } 
+                if(jtxtfldDGEasting.getText().strip().equals("")){
+                    jtxtfldEGrad.grabFocus();
+                    return;
+                }
+                testjson = aAC.getByCoordinate(Double.parseDouble(jtxtfldDGNorthing.getText().strip().replace(",", ".")), Double.parseDouble(jtxtfldDGEasting.getText().strip().replace(",", ".")), jcmbbxGemeinde.getSelectedItem().toString());
+            }
+            
+            // Prüft, ob die API-Antwort anzeigt, dass kein Flurstück gefunden wurde.
+            if(testjson.contains("Kein passendes Flurst")){
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Unter den angegebenen Kriterien konnte kein Flurstück gefunden werden.",
+                    "Hinweis: Kein Flurstück gefunden",
+                    JOptionPane.WARNING_MESSAGE
+                );
+                return; // Beendet die Methode, da kein Flurstück gefunden wurde.
             }
             
             // Parsen der JSON-Antwort
@@ -750,7 +887,8 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
             
             // Extrahieren der Flurstücksdaten aus dem JSON und Speichern in data
             String[] gmn = gesamtJSON.getString("dateiname").split("_");
-            data.gemeindename = gmn[2] + ((gmn.length > 4) ? gmn[3] : ""); // Setzt den Gemeindenamen
+            data.gemeindename = gmn[2] + ((gmn.length > 4) ? gmn[3] : "");
+            // Setzt den Gemeindenamen, berücksichtigt, ob der Dateiname mehrere Teile enthält
             data.flurstueckszaehler = gesamtJSON.getInt("zaehler"); // Setzt den Flurstückzähler
             data.flurstuecksnenner = gesamtJSON.getInt("nenner"); // Setzt den Flurstücksnenner
             data.amtFlaeche = gesamtJSON.getInt("amtlicheFlaeche"); // Setzt die amtliche Fläche
@@ -760,6 +898,8 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
             if (gesamtJSON.isNull("koordinaten")){                
                 String tmp = gesamtJSON.getString("wkt");
                 // Konvertiert WKT-String in ein JSON-Array-Format, das geparst werden kann
+                // Ersetzt "POLYGON ((" mit "{"koordinaten":[" und "))" mit "]}".
+                // Ersetzt "x y" Paare mit "[x,y]" und entfernt Leerzeichen.
                 tmp = tmp.replace("POLYGON ((", "{\"koordinaten\":[").replace("))", "]}").replaceAll("(\\d+(?:\\.\\d+)?)\\s+(\\d+(?:\\.\\d+)?)", "[$1,$2]").replaceAll("\\s+", "");
                 JSONObject tmpJSON = new JSONObject(tmp);
                 koordinatenJSON = tmpJSON.getJSONArray("koordinaten");
@@ -809,7 +949,14 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
             
             this.dispose(); // Schließt das aktuelle Fenster
         }catch(Exception e){
-            e.printStackTrace(); // Gibt Fehlermeldungen aus
+            e.printStackTrace(); // Gibt Fehlermeldungen auf der Konsole aus
+            // Zeigt eine Fehlermeldung an den Benutzer
+            JOptionPane.showMessageDialog(
+                null,
+                "Ein Fehler ist aufgetreten: " + e.getMessage() + "\nBitte überprüfen Sie Ihre Eingaben und die Verbindung zum ALKIS-API-Server.",
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE
+            );
             this.dispose(); // Schließt das Fenster auch bei Fehlern
         }        
     }
@@ -818,11 +965,14 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton jbtnAPImakeImport;
     private javax.swing.JButton jbtnAbbrechen;
     private javax.swing.JButton jbtnUebernehmen;
     private javax.swing.JComboBox<String> jcmbbxGemeinde;
     private javax.swing.JFormattedTextField jfrmttxtfldFlurstuecknenner;
     private javax.swing.JFormattedTextField jfrmttxtfldFlurstueckzahler;
+    private javax.swing.JLabel jlblDGEasting;
+    private javax.swing.JLabel jlblDGNorthing;
     private javax.swing.JLabel jlblE1;
     private javax.swing.JLabel jlblE2;
     private javax.swing.JLabel jlblE3;
@@ -831,21 +981,19 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jlblN1;
     private javax.swing.JLabel jlblN2;
     private javax.swing.JLabel jlblN3;
-    private javax.swing.JLabel jlblUTMEasting;
-    private javax.swing.JLabel jlblUTMNorthing;
-    private javax.swing.JPanel jpnlETRS89_UTM;
+    private javax.swing.JPanel jpnlDGEingabe;
     private javax.swing.JPanel jpnlFlurstueckEingabe;
-    private javax.swing.JPanel jpnlKoordinatenEingabe;
+    private javax.swing.JPanel jpnlGMSEingabe;
     private javax.swing.JTabbedPane jtbdpnFlurKoord;
     private javax.swing.JTabbedPane jtbdpnKoordinatenEingabe;
+    private javax.swing.JTextField jtxtfldDGEasting;
+    private javax.swing.JTextField jtxtfldDGNorthing;
     private javax.swing.JTextField jtxtfldEGrad;
     private javax.swing.JTextField jtxtfldEMinuten;
     private javax.swing.JTextField jtxtfldESekunden;
     private javax.swing.JTextField jtxtfldNGrad;
     private javax.swing.JTextField jtxtfldNMinuten;
     private javax.swing.JTextField jtxtfldNSekunden;
-    private javax.swing.JTextField jtxtfldUTMEasting;
-    private javax.swing.JTextField jtxtfldUTMNorthing;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -874,6 +1022,7 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
     /**
      * Aktualisiert die Dropdown-Liste der Gemarkungen, indem sie Daten von der ALKIS-API abruft.
      * Bei erfolgreichem Login werden die Gemarkungen alphabetisch sortiert und in die ComboBox eingefügt.
+     * Fängt {@code HttpHostConnectException} ab, um eine Meldung auszugeben, wenn der API-Server nicht erreichbar ist.
      */
     private void updateMarkings(){
         try{
@@ -892,7 +1041,14 @@ public class FlurstueckEingabeGUI extends javax.swing.JFrame {
         } catch(org.apache.http.conn.HttpHostConnectException e) {
             // Ignoriert die Fehlermeldung, wenn keine Verbindung zum Host aufgebaut werden kann
             // Dies ist oft der Fall, wenn der lokale API-Server nicht läuft
+            // Fängt die spezifische Ausnahme für Verbindungsfehler ab.
             System.out.println("Fehler: Verbindung zur ALKIS-API konnte nicht hergestellt werden. Bitte stellen Sie sicher, dass der Server läuft.");
+            JOptionPane.showMessageDialog(
+                null,
+                "Fehler: Verbindung zur ALKIS-API konnte nicht hergestellt werden.\nBitte stellen Sie sicher, dass der ALKISService.exe Server läuft.",
+                "Verbindungsfehler",
+                JOptionPane.ERROR_MESSAGE
+            );
         } catch(Exception e){
             e.printStackTrace(); // Gibt andere unerwartete Fehler aus
         }        

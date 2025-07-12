@@ -30,7 +30,8 @@
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <Component id="jtbdpnFlurKoord" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jbtnAPImakeImport" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="jbtnAbbrechen" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbtnUebernehmen" min="-2" max="-2" attributes="0"/>
@@ -51,6 +52,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jbtnUebernehmen" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnAbbrechen" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnAPImakeImport" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -141,6 +143,7 @@
                 <Property name="columns" type="int" value="10"/>
               </Properties>
               <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jfrmttxtfldFlurstueckzahlerFocusGained"/>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jfrmttxtfldFlurstueckzahlerKeyPressed"/>
               </Events>
               <AuxValues>
@@ -157,6 +160,7 @@
                 <Property name="columns" type="int" value="10"/>
               </Properties>
               <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jfrmttxtfldFlurstuecknennerFocusGained"/>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jfrmttxtfldFlurstuecknennerKeyPressed"/>
               </Events>
               <AuxValues>
@@ -176,11 +180,11 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="jpnlKoordinatenEingabe">
+            <Container class="javax.swing.JPanel" name="jpnlGMSEingabe">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Koordinaten">
-                    <Property name="tabTitle" type="java.lang.String" value="Koordinaten"/>
+                  <JTabbedPaneConstraints tabName="GMS ">
+                    <Property name="tabTitle" type="java.lang.String" value="GMS "/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -354,11 +358,11 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jpnlETRS89_UTM">
+            <Container class="javax.swing.JPanel" name="jpnlDGEingabe">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="ETRS89/UTM">
-                    <Property name="tabTitle" type="java.lang.String" value="ETRS89/UTM"/>
+                  <JTabbedPaneConstraints tabName="Dezimalgrad">
+                    <Property name="tabTitle" type="java.lang.String" value="Dezimalgrad"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -369,15 +373,15 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jtxtfldUTMEasting" max="32767" attributes="0"/>
-                              <Component id="jtxtfldUTMNorthing" pref="187" max="32767" attributes="0"/>
+                              <Component id="jtxtfldDGNorthing" max="32767" attributes="0"/>
+                              <Component id="jtxtfldDGEasting" pref="187" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jlblUTMEasting" max="32767" attributes="0"/>
-                              <Component id="jlblUTMNorthing" pref="50" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jlblDGNorthing" min="-2" pref="63" max="-2" attributes="0"/>
+                              <Component id="jlblDGEasting" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="144" max="32767" attributes="0"/>
+                          <EmptySpace pref="141" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -386,13 +390,13 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtxtfldUTMEasting" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlblUTMEasting" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtxtfldDGNorthing" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlblDGNorthing" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtxtfldUTMNorthing" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlblUTMNorthing" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtxtfldDGEasting" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlblDGEasting" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>
@@ -400,45 +404,42 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JTextField" name="jtxtfldUTMEasting">
+                <Component class="javax.swing.JTextField" name="jtxtfldDGNorthing">
                   <Properties>
                     <Property name="columns" type="int" value="12"/>
-                    <Property name="toolTipText" type="java.lang.String" value="~ 470&#x202f;000 m"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <Events>
-                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtxtfldUTMEastingFocusGained"/>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtxtfldUTMEastingKeyPressed"/>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtxtfldDGNorthingFocusGained"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtxtfldDGNorthingKeyPressed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(utmFormatter)"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(deziFormatter)"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtxtfldUTMNorthing">
+                <Component class="javax.swing.JTextField" name="jtxtfldDGEasting">
                   <Properties>
                     <Property name="columns" type="int" value="12"/>
-                    <Property name="toolTipText" type="java.lang.String" value="~ 5&#x202f;340&#x202f;000 m"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <Events>
-                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtxtfldUTMNorthingFocusGained"/>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtxtfldUTMNorthingKeyPressed"/>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtxtfldDGEastingFocusGained"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtxtfldDGEastingKeyPressed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(utmFormatter)"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(deziFormatter)"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlblUTMEasting">
+                <Component class="javax.swing.JLabel" name="jlblDGEasting">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Easting"/>
-                    <Property name="toolTipText" type="java.lang.String" value="~ 470&#x202f;000 m"/>
+                    <Property name="text" type="java.lang.String" value="L&#xe4;ngengrad"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
-                  <AccessibilityProperties>
-                    <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
-                  </AccessibilityProperties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlblUTMNorthing">
+                <Component class="javax.swing.JLabel" name="jlblDGNorthing">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Northing"/>
-                    <Property name="toolTipText" type="java.lang.String" value="~ 5&#x202f;340&#x202f;000 m"/>
+                    <Property name="text" type="java.lang.String" value="Breitengrad"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -494,5 +495,16 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="jbtnAPImakeImport">
+      <Properties>
+        <Property name="text" type="java.lang.String" value=" "/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnAPImakeImportActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jbtnAPImakeImport.setVisible(false);"/>
+      </AuxValues>
+    </Component>
   </SubComponents>
 </Form>
