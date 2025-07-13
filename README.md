@@ -9,19 +9,19 @@ Schnellstart
 2. **Java Runtime 8+ installieren:**  
    [Download hier](https://download.oracle.com/java/24/latest/jdk-24_windows-x64_bin.exe)
 3. **Projekt herunterladen:**  
-   - `dist/AgriPVSimulation.jar` (Java-Programm)
+   - `dist/` (Java-Programm-Ordner)
    - `release/ALKISService.exe` (.NET API)
 4. **API starten:**  
    - Doppelklick auf `ALKISService.exe`
 5. **Simulation starten:**  
-   - Doppelklick auf `AgriPVSimulation.jar`
+   - Doppelklick auf `dist/AgriPVSimulation.jar`
 
 ---
 
 Systemvoraussetzungen
 
 - Windows, macOS oder Linux
-- Java 8+ (OpenJDK empfohlen)
+- Java 8+
 - .NET Runtime 9+
 - Mindestens 4 GB RAM (empfohlen 8 GB)
 - 100 MB Speicherplatz (zusätzlich bis 10 GB für ALKIS-API bei lokaler Datenhaltung)
