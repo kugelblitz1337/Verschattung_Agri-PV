@@ -1,4 +1,4 @@
-# Agri-PV Verschattungs-Simulation
+# Agri-PV Verschattungs-Simulation 
 
 Ein Simulationstool zur Planung und Visualisierung von Verschattungen bei Agri-Photovoltaik-Projekten auf Basis von ALKIS-Daten.
 
